@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 75320
-Proyecto biblioteca para el desarrollo de un backend usando springboot
-Taller
+proyecto modificado por 902935_JaiderRodriguez
+=======
