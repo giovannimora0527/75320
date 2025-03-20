@@ -15,10 +15,10 @@ import org.springframework.http.ResponseEntity;
  */
 @RestController
 public class LibroApiController implements LibroApi {
-    
+
     @Autowired
     private LibroService libroService;
-    
+
     @Override
     public ResponseEntity<List<Libro>> listarLibros()
             throws BadRequestException {
@@ -27,6 +27,46 @@ public class LibroApiController implements LibroApi {
 
     @Override
     public ResponseEntity<Libro> obtenerLibroPorId(Integer libroId) throws BadRequestException {
-      return ResponseEntity.ok(this.libroService.obtenerLibroId(libroId));
+        return ResponseEntity.ok(this.libroService.obtenerLibroId(libroId));
     }
+
+    @Override
+    public ResponseEntity<List<Libro>> listarLibroAutorId(Integer autorId) throws BadRequestException {
+        if (autorId <= 0 || autorId.equals("")) {
+            System.out.println("El ID del autor no puede ser nulo.");
+            return ResponseEntity.badRequest().body(null);
+        }
+
+        List<Libro> libros = this.libroService.listarLibroAutorId(autorId);
+
+        if (libros.isEmpty()) {
+            System.out.println("No se encontraron libros para el autor con ID:" + autorId);
+            return ResponseEntity.notFound().build();
+        }
+
+//        return libros;
+        return ResponseEntity.ok(this.libroService.listarLibroAutorId(autorId));
+    }
+
+    @Override
+    public ResponseEntity<Libro> buscarNombreLibro(String titulo) throws BadRequestException {
+        Libro libro = this.libroService.buscarNombreLibro(titulo);
+        if (libro == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(libro);
+    }
+
+    @Override
+    public ResponseEntity<List<Libro>> listarLibrosRangoFechas(Integer fechaInicio, Integer fechaFin) throws BadRequestException {
+        System.out.println("fallo " + fechaInicio);
+        List<Libro> libros = libroService.listarLibrosRangoFechas(fechaInicio, fechaFin);
+
+        if (libros.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(libros);
+    }
+
 }

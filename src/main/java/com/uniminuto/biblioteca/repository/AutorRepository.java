@@ -11,8 +11,7 @@ import org.springframework.stereotype.Repository;
  * @author lmora
  */
 @Repository
-public interface AutorRepository extends
-        JpaRepository<Autor, Integer>  {
+public interface AutorRepository extends JpaRepository<Autor, Integer>  {
     List<Autor> findByFechaNacimientoBetween(LocalDate fechaNacimientoInicial,
             LocalDate fechaNacimientoFin);
     

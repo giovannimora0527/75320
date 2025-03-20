@@ -25,12 +25,12 @@ public interface LibroApi {
      */
     @RequestMapping(value = "/listar",
             produces = {"application/json"},
-            consumes = {"application/json"},
+            //            consumes = {"application/json"},
             method = RequestMethod.GET)
     ResponseEntity<List<Libro>> listarLibros()
             throws BadRequestException;
-    
-     /**
+
+    /**
      * Metodo para listar los autores registrados en bd.
      *
      * @param libroId Id del libro.
@@ -42,5 +42,25 @@ public interface LibroApi {
             consumes = {"application/json"},
             method = RequestMethod.GET)
     ResponseEntity<Libro> obtenerLibroPorId(@RequestParam Integer libroId)
+            throws BadRequestException;
+
+    @RequestMapping(value = "/obtenerLibroAutor",
+            produces = {"application/json"},
+            //            consumes = {"application/json"},
+            method = RequestMethod.GET)
+    ResponseEntity<List<Libro>> listarLibroAutorId(@RequestParam Integer autorId)
+            throws BadRequestException;
+
+    @RequestMapping(value = "/obtenerTituloLibro",
+            produces = {"application/json"},
+            //            consumes = {"application/json"},
+            method = RequestMethod.GET)
+    ResponseEntity<Libro> buscarNombreLibro(@RequestParam String titulo)
+            throws BadRequestException;
+
+    @RequestMapping(value = "/listarPorFechas",
+            produces = {"application/json"},
+            method = RequestMethod.GET)
+    ResponseEntity<List<Libro>> listarLibrosRangoFechas(@RequestParam Integer fechaInicio, @RequestParam Integer fechaFin)
             throws BadRequestException;
 }

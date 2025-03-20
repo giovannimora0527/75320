@@ -3,7 +3,7 @@ package com.uniminuto.biblioteca;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.uniminuto.biblioteca")
 public class BibliotecaApplication {
 
 	public static void main(String[] args) {

@@ -48,4 +48,6 @@ public class Libro implements Serializable {
     /** Cantidad de ejemplares disponibles del libro. */
     @Column(name = "existencias", nullable = false)
     private Integer existencias;
+    
+    
 }

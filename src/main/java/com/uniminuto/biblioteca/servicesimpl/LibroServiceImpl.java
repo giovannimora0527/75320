@@ -15,22 +15,43 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class LibroServiceImpl implements LibroService {
-    
+
     @Autowired
     private LibroRepository libroRepository;
 
     @Override
     public List<Libro> listarLibros() throws BadRequestException {
-       return this.libroRepository.findAll();
+        return this.libroRepository.findAll();
     }
 
     @Override
-    public Libro obtenerLibroId(Integer libroId) throws BadRequestException {        
+    public Libro obtenerLibroId(Integer libroId) throws BadRequestException {
         Optional<Libro> optLibro = this.libroRepository.findById(libroId);
         if (!optLibro.isPresent()) {
-            throw new BadRequestException("No se encuentra el libro con el id = " 
-                    + libroId);
+            throw new BadRequestException("No se encuentra el libro con el id = " + libroId);
         }
-      return optLibro.get();
+        return optLibro.get();
     }
+
+    @Override
+    public List<Libro> listarLibroAutorId(Integer idAutor) throws BadRequestException {
+
+        return this.libroRepository.findByAutor_AutorId(idAutor);
+    }
+
+    @Override
+    public Libro buscarNombreLibro(String titulo) throws BadRequestException {
+        return this.libroRepository.findByTitulo(titulo);
+
+    }
+
+    @Override
+    public List<Libro> listarLibrosRangoFechas(Integer fechaInicio, Integer fechaFin) throws BadRequestException {
+        if (fechaInicio == null || fechaFin == null || fechaInicio > fechaFin) {
+        throw new BadRequestException("Las fechas proporcionadas no son válidas.");
+    }
+    
+    return libroRepository.findByAnioPublicacionBetween(fechaInicio, fechaFin);
+}
+    
 }
