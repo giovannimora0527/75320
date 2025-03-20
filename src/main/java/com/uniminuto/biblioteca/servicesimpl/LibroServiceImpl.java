@@ -47,6 +47,7 @@ public class LibroServiceImpl implements LibroService {
 
     @Override
     public List<Libro> listarLibrosRangoFechas(Integer fechaInicio, Integer fechaFin) throws BadRequestException {
+        System.out.println("Fecha inicio" + fechaInicio);
         if (fechaInicio == null || fechaFin == null || fechaInicio > fechaFin) {
         throw new BadRequestException("Las fechas proporcionadas no son válidas.");
     }
