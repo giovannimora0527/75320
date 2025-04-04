@@ -1,8 +1,11 @@
 package com.uniminuto.biblioteca.servicesimpl;
 
 import com.uniminuto.biblioteca.entity.Usuario;
+import com.uniminuto.biblioteca.model.RespuestaGenerica;
+import com.uniminuto.biblioteca.model.UsuarioRq;
 import com.uniminuto.biblioteca.repository.UsuarioRepository;
 import com.uniminuto.biblioteca.services.UsuarioService;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
@@ -60,15 +63,49 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     /**
-     * 
+     *
      * @param correo
-     * @return 
+     * @return
      */
     public boolean validarCorreo(String correo) {
         if (correo == null || correo.isBlank()) {
             return false;
         }
         return EMAIL_PATTERN.matcher(correo).matches();
+    }
+
+    @Override
+    public RespuestaGenerica guardarUsuario(UsuarioRq usuario)
+            throws BadRequestException {      
+        Optional<Usuario> optUser = this.usuarioRepository
+                .findByNombre(usuario.getNombre());
+        if (optUser.isPresent()) {
+            throw new BadRequestException("El usuario se encuentra registrado con el nombre: "
+                    + usuario.getNombre() + ". Valide e intente de nuevo.");
+        }
+
+        optUser = this.usuarioRepository
+                .findByCorreo(usuario.getCorreo());
+        if (optUser.isPresent()) {
+            throw new BadRequestException("El usuario se encuentra registrado con el correo: "
+                    + usuario.getCorreo() + ". Valide e intente de nuevo.");
+        }
+
+        Usuario userToSave = this.transformarUsuarioRqToUsuario(usuario);
+        this.usuarioRepository.save(userToSave);
+        RespuestaGenerica rta = new RespuestaGenerica();
+        rta.setMessage("Se ha guardado el usuario satisfactoriamente.");
+        return rta;
+    }
+
+    private Usuario transformarUsuarioRqToUsuario(UsuarioRq usuario) {
+        Usuario user = new Usuario();
+        user.setActivo(Boolean.TRUE);
+        user.setCorreo(usuario.getCorreo());
+        user.setFechaRegistro(LocalDateTime.now());
+        user.setNombre(usuario.getNombre());
+        user.setTelefono(usuario.getTelefono());
+        return user;
     }
 
 }

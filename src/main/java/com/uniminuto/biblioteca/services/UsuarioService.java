@@ -1,6 +1,8 @@
 package com.uniminuto.biblioteca.services;
 
 import com.uniminuto.biblioteca.entity.Usuario;
+import com.uniminuto.biblioteca.model.RespuestaGenerica;
+import com.uniminuto.biblioteca.model.UsuarioRq;
 import java.util.List;
 import org.apache.coyote.BadRequestException;
 
@@ -24,5 +26,8 @@ public interface UsuarioService {
      * @throws BadRequestException excepcion.
      */
     Usuario buscarPorCorreo(String correo) throws BadRequestException;
+    
+    
+    RespuestaGenerica guardarUsuario(UsuarioRq usuario) throws BadRequestException;
     
 }
