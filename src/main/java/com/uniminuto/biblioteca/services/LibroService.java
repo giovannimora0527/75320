@@ -1,7 +1,10 @@
 package com.uniminuto.biblioteca.services;
 
 import com.uniminuto.biblioteca.entity.Libro;
+<<<<<<< HEAD
 import java.time.LocalDateTime;
+=======
+>>>>>>> be32fc8 (feat: ajustes iniciales)
 import java.util.List;
 import org.apache.coyote.BadRequestException;
 
@@ -10,6 +13,7 @@ import org.apache.coyote.BadRequestException;
  * @author lmora
  */
 public interface LibroService {
+<<<<<<< HEAD
     /**
      * Lista todos los libros.
      * @return Lista de libros registrados.
@@ -51,4 +55,9 @@ public interface LibroService {
      */
     List<Libro> obtenerLibroXRangoPublicacion(Integer anioIni, 
             Integer anioFin) throws BadRequestException;
+=======
+    List<Libro> listarLibros() throws BadRequestException;
+    
+    Libro obtenerLibroId(Integer libroId) throws BadRequestException;
+>>>>>>> be32fc8 (feat: ajustes iniciales)
 }

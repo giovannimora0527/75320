@@ -1,8 +1,12 @@
 package com.uniminuto.biblioteca.repository;
 
+<<<<<<< HEAD
 import com.uniminuto.biblioteca.entity.Autor;
 import com.uniminuto.biblioteca.entity.Libro;
 import java.util.List;
+=======
+import com.uniminuto.biblioteca.entity.Libro;
+>>>>>>> be32fc8 (feat: ajustes iniciales)
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,6 +18,7 @@ import org.springframework.stereotype.Repository;
 public interface LibroRepository extends
         JpaRepository<Libro, Integer> {
     
+<<<<<<< HEAD
     /**
      * Obtiene la lista dado un autor.
      * @param autor Autor a buscar.
@@ -36,4 +41,6 @@ public interface LibroRepository extends
      */
     List<Libro> findByAnioPublicacionBetween(Integer anioIni, Integer anioFin);
     
+=======
+>>>>>>> be32fc8 (feat: ajustes iniciales)
 }
