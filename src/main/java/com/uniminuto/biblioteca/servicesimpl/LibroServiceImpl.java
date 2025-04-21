@@ -8,6 +8,8 @@ import java.util.Optional;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.HttpStatus;
 
 /**
  *
@@ -32,5 +34,19 @@ public class LibroServiceImpl implements LibroService {
                     + libroId);
         }
       return optLibro.get();
+    }
+    
+    @Override
+public Libro obtenerLibroPorTitulo(String titulo) throws BadRequestException {
+    return libroRepository.findByTitulo(titulo)
+        .orElseThrow(() -> new BadRequestException("Libro no encontrado con título: " + titulo));
+}
+
+     @Override
+    public List<Libro> obtenerLibrosPorRangoDeFechas(Integer inicio, Integer fin) throws BadRequestException {
+        if (inicio > fin) {
+            throw new BadRequestException("El año de inicio no puede ser mayor al año final.");
+        }
+        return libroRepository.findByAnioPublicacionBetween(inicio, fin);
     }
 }

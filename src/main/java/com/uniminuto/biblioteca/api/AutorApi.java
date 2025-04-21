@@ -57,4 +57,31 @@ public interface AutorApi {
     ResponseEntity<Autor> listarAutorPorId(@RequestParam Integer autorIds)
             throws BadRequestException;
     
+    /**
+     * Metodo para crear un nuevo autor.
+     *
+     * @param autor Autor a crear.
+     * @return Autor creado.
+     * @throws BadRequestException excepcion.
+     */
+    @RequestMapping(value = "/guardar-autor",
+            produces = {"application/json"},
+            consumes = {"application/json"},
+            method = RequestMethod.POST)
+    ResponseEntity<Autor> guardarAutor(Autor autor)
+            throws BadRequestException;
+    
+    /**
+     * Metodo para actualizar un autor existente.
+     *
+     * @param autor Autor a actualizar.
+     * @return Autor actualizado.
+     * @throws BadRequestException excepcion.
+     */
+    @RequestMapping(value = "/actualizar-autor",
+            produces = {"application/json"},
+            consumes = {"application/json"},
+            method = RequestMethod.PUT)
+    ResponseEntity<Autor> actualizarAutor(Autor autor)
+            throws BadRequestException;
 }

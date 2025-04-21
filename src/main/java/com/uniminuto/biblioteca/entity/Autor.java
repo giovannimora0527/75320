@@ -1,51 +1,66 @@
 package com.uniminuto.biblioteca.entity;
 
-import java.io.Serializable;
+import javax.persistence.*;
 import java.time.LocalDate;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import lombok.Data;
 
-/**
- *
- * @author lmora
- */
-@Data
 @Entity
-@Table(name = "autores")
-public class Autor implements Serializable {
-    /**
-     * Id serializable.
-     */
-    private static final long serialVersionUID = 1L;
-    
-    /**
-     * Identificador único del autor.
-     */
+@Table(name = "autores", uniqueConstraints = {
+    @UniqueConstraint(columnNames = "nombre")
+})
+public class Autor {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_autor")
-    private Integer autorId;
-    
-    /**
-     * Nombre del autor.
-     */
-    @Column(name = "nombre", nullable = false, length = 100)
+    private Integer id;
+
+    @Column(name = "nombre", nullable = false, unique = true)
     private String nombre;
-    
-    /**
-     * Nacionalidad del autor.
-     */
-    @Column(name = "nacionalidad", length = 50)
+
+    @Column(name = "nacionalidad")
     private String nacionalidad;
-    
-    /**
-     * Fecha de nacimiento del autor.
-     */
+
     @Column(name = "fecha_nacimiento")
     private LocalDate fechaNacimiento;
+
+    public Autor() {
+    }
+
+    public Autor(String nombre, String nacionalidad, LocalDate fechaNacimiento) {
+        this.nombre = nombre;
+        this.nacionalidad = nacionalidad;
+        this.fechaNacimiento = fechaNacimiento;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getNacionalidad() {
+        return nacionalidad;
+    }
+
+    public void setNacionalidad(String nacionalidad) {
+        this.nacionalidad = nacionalidad;
+    }
+
+    public LocalDate getFechaNacimiento() {
+        return fechaNacimiento;
+    }
+
+    public void setFechaNacimiento(LocalDate fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
+    }
 }

@@ -48,4 +48,36 @@ public class AutorServiceImpl implements AutorService {
         return optAutor.get();
     }
 
+    @Override
+    public List<Autor> obtenerAutoresPorNacionalidad(String nacionalidad) {
+        System.out.println("Ejecutando consulta para nacionalidad: " + nacionalidad);
+        List<Autor> autores = autorRepository.findByNacionalidadIgnoreCase(nacionalidad);
+        System.out.println("Autores encontrados: " + autores);
+        return autores;
+    }
+
+    @Override
+    public Autor guardarAutor(Autor autor) throws BadRequestException {
+        Optional<Autor> autorExistente = autorRepository.findByNombre(autor.getNombre());
+        if (autorExistente.isPresent()) {
+            throw new BadRequestException("El nombre del autor ya existe en el sistema.");
+        }
+        return autorRepository.save(autor);
+    }
+
+    @Override
+    public Autor actualizarAutor(Autor autor) throws BadRequestException {
+        if (autor.getId() == null) {
+            throw new BadRequestException("El ID del autor es requerido para la actualización.");
+        }
+        Optional<Autor> autorExistente = autorRepository.findById(autor.getId());
+        if (!autorExistente.isPresent()) {
+            throw new BadRequestException("El autor a actualizar no existe.");
+        }
+        Optional<Autor> autorConNombre = autorRepository.findByNombre(autor.getNombre());
+        if (autorConNombre.isPresent() && !autorConNombre.get().getId().equals(autor.getId())) {
+            throw new BadRequestException("El nombre del autor ya existe en el sistema.");
+        }
+        return autorRepository.save(autor);
+    }
 }
