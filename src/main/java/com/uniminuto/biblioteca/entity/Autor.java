@@ -9,7 +9,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Data;
-
+import javax.persistence.OneToMany;
+import javax.persistence.CascadeType;
+import java.util.List;
 /**
  *
  * @author lmora
@@ -48,4 +50,7 @@ public class Autor implements Serializable {
      */
     @Column(name = "fecha_nacimiento")
     private LocalDate fechaNacimiento;
+    
+    @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Libro> libros;
 }

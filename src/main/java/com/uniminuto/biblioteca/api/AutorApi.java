@@ -2,59 +2,59 @@ package com.uniminuto.biblioteca.api;
 
 import com.uniminuto.biblioteca.entity.Autor;
 import java.util.List;
+import com.uniminuto.biblioteca.model.AutorRq;
+import com.uniminuto.biblioteca.model.AutorRq;
+import com.uniminuto.biblioteca.model.AutorRs;
+import com.uniminuto.biblioteca.model.RespuestaGenerica;
 import org.apache.coyote.BadRequestException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
- *
- * @author lmora
+ * API para la gestión de autores
  */
 @CrossOrigin(origins = "*")
 @RequestMapping("/autor")
 public interface AutorApi {
+
     /**
-     * Metodo para listar los autores registrados en bd.
-     *
-     * @return Lista de autores.
-     * @throws BadRequestException excepcion.
+     * Lista todos los autores registrados.
+     * 
+     * @return lista de autores.
+     * @throws BadRequestException si ocurre un error.
      */
-    @RequestMapping(value = "/listar",
-            produces = {"application/json"},
-            consumes = {"application/json"},
-            method = RequestMethod.GET)
-    ResponseEntity<List<Autor>> listarAutores()
-            throws BadRequestException;
-    
-     /**
-     * Metodo para listar los autores registrados en bd.
+    @RequestMapping(value = "/listar", 
+                    method = RequestMethod.GET, 
+                    produces = "application/json")
+    ResponseEntity<List<AutorRs>> listarAutores() throws BadRequestException;
+
+    /**
+     * Guarda un nuevo autor.
      *
-     * @param nacionalidad nacionalidad del autor.
-     * @return Lista de autores.
-     * @throws BadRequestException excepcion.
+     * @param autor datos del autor a guardar.
+     * @return respuesta de éxito o error.
+     * @throws BadRequestException si ya existe un autor con ese nombre.
      */
-    @RequestMapping(value = "/listar-nacionalidad",
-            produces = {"application/json"},
-            consumes = {"application/json"},
-            method = RequestMethod.GET)
-    ResponseEntity<List<Autor>> listarAutoresByNacionalidad(
-     @RequestParam String nacionalidad)
-            throws BadRequestException;
-    
-     /**
-     * Metodo para listar los autores registrados en bd.
+    @RequestMapping(value = "/guardar", 
+                    method = RequestMethod.POST, 
+                    consumes = "application/json", 
+                    produces = "application/json")
+    ResponseEntity<RespuestaGenerica> guardarAutor(@RequestBody AutorRq autor) throws BadRequestException;
+
+    /**
+     * Actualiza un autor existente.
      *
-     * @return Lista de autores.
-     * @throws BadRequestException excepcion.
+     * @param autor datos del autor actualizado.
+     * @return respuesta de éxito o error.
+     * @throws BadRequestException si el nuevo nombre ya está en uso.
      */
-    @RequestMapping(value = "/listar-autor-id",
-            produces = {"application/json"},
-            consumes = {"application/json"},
-            method = RequestMethod.GET)
-    ResponseEntity<Autor> listarAutorPorId(@RequestParam Integer autorIds)
-            throws BadRequestException;
-    
+    @RequestMapping(value = "/actualizar", 
+                    method = RequestMethod.POST, 
+                    consumes = "application/json", 
+                    produces = "application/json")
+    ResponseEntity<RespuestaGenerica> actualizarAutor(@RequestBody AutorRq autor) throws BadRequestException;
 }

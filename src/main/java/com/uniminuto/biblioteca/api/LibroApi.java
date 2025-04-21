@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  *
@@ -23,9 +24,14 @@ public interface LibroApi {
      * @return Lista de libros registrados.
      * @throws BadRequestException excepcion.
      */
+    @ResponseBody
+    
+    
+    
+    
     @RequestMapping(value = "/listar",
             produces = {"application/json"},
-            consumes = {"application/json"},
+            /*consumes = {"application/json"},*/
             method = RequestMethod.GET)
     ResponseEntity<List<Libro>> listarLibros()
             throws BadRequestException;
