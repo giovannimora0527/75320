@@ -2,6 +2,8 @@ package com.uniminuto.biblioteca.apicontroller;
 
 import com.uniminuto.biblioteca.api.AutorApi;
 import com.uniminuto.biblioteca.entity.Autor;
+import com.uniminuto.biblioteca.model.AutorRq;
+import com.uniminuto.biblioteca.model.RespuestaGenerica;
 import com.uniminuto.biblioteca.services.AutorService;
 import java.util.List;
 import org.apache.coyote.BadRequestException;
@@ -36,6 +38,16 @@ public class AutorApiController implements AutorApi {
     @Override
     public ResponseEntity<Autor> listarAutorPorId(Integer autorId) throws BadRequestException {
        return ResponseEntity.ok(this.autorService.obtenerAutorPorId(autorId));
+    }
+
+    @Override
+    public ResponseEntity<RespuestaGenerica> guardarAutor(AutorRq autor) throws BadRequestException {
+        return ResponseEntity.ok(this.autorService.guardarAutor(autor));
+    }
+
+    @Override
+    public ResponseEntity<RespuestaGenerica> actualizarAutor(Autor autor) throws BadRequestException {
+        return ResponseEntity.ok(this.autorService.actualizarAutor(autor));
     }
 
     

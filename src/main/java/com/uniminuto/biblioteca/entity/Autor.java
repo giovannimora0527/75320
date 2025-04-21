@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import lombok.Data;
 
 /**
@@ -16,7 +17,7 @@ import lombok.Data;
  */
 @Data
 @Entity
-@Table(name = "autores")
+@Table(name = "autores", uniqueConstraints = @UniqueConstraint(columnNames = "nombre"))
 public class Autor implements Serializable {
     /**
      * Id serializable.
@@ -28,7 +29,7 @@ public class Autor implements Serializable {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_autor")
+    @Column(name = "id_autor", nullable = false)
     private Integer autorId;
     
     /**
@@ -48,4 +49,9 @@ public class Autor implements Serializable {
      */
     @Column(name = "fecha_nacimiento")
     private LocalDate fechaNacimiento;
+
+    @Column(name = "activo")
+    private Boolean activo;
+
+   
 }
