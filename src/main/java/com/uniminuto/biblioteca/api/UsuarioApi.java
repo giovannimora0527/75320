@@ -72,7 +72,7 @@ public interface UsuarioApi {
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<Usuario> actualizarUsuario(
+    ResponseEntity<RespuestaGenerica> actualizarUsuario(
             @RequestBody Usuario usuario)
             throws BadRequestException;
 

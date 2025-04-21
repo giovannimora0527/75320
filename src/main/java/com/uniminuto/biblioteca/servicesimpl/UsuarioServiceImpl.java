@@ -76,7 +76,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public RespuestaGenerica guardarUsuario(UsuarioRq usuario)
-            throws BadRequestException {      
+            throws BadRequestException {
         Optional<Usuario> optUser = this.usuarioRepository
                 .findByNombre(usuario.getNombre());
         if (optUser.isPresent()) {
@@ -106,6 +106,67 @@ public class UsuarioServiceImpl implements UsuarioService {
         user.setNombre(usuario.getNombre());
         user.setTelefono(usuario.getTelefono());
         return user;
+    }
+
+    @Override
+    public RespuestaGenerica actualizarUsuario(Usuario usuario)
+            throws BadRequestException {
+        //Paso 1.
+        Optional<Usuario> userOpt = this.usuarioRepository
+                .findById(usuario.getIdUsuario());
+        if (!userOpt.isPresent()) {
+            throw new BadRequestException("No existe el usuario.");
+        }
+        RespuestaGenerica rta = new RespuestaGenerica();
+        rta.setMessage("Se ha actualizado el usuario.");
+        Usuario userActual = userOpt.get();
+        if (!this.hayCambios(userActual, usuario)) {
+            // Paso 3.
+            return rta;
+        }
+
+        // Paso 4 y paso 5
+        if (!userActual.getNombre().equals(usuario.getNombre())) {
+            // Consulto si existe el nombre en la bd
+            // Si existe lanzo excepcion
+            if (this.usuarioRepository.existsByNombre(usuario.getNombre())) {
+                throw new BadRequestException("El usuario ya se encuentra registrado con el "
+                        + "nombre " + usuario.getNombre());
+            }
+        }
+
+        // paso 6.
+        if (!userActual.getCorreo().equals(usuario.getCorreo())) {
+            // COnsulto el correo en la bd
+            // Si existe lanzo excepcion
+            if (this.usuarioRepository.existsByCorreo(usuario.getCorreo())) {
+                throw new BadRequestException("El correo ya se encuentra registrado "
+                        + usuario.getCorreo());
+            }
+        }
+        userActual.setActivo(usuario.getActivo());
+        userActual.setNombre(usuario.getNombre());
+        userActual.setCorreo(usuario.getCorreo());
+        userActual.setTelefono(usuario.getTelefono());
+
+        this.usuarioRepository.save(userActual);
+        return rta;
+    }
+
+    private boolean hayCambios(Usuario usuarioActual, Usuario usuario) {
+        if (!usuarioActual.getNombre().equals(usuario.getNombre())) {
+            return true;
+        }
+        if (!usuarioActual.getTelefono().equals(usuario.getTelefono())) {
+            return true;
+        }
+        if (!usuarioActual.getCorreo().equals(usuario.getCorreo())) {
+            return true;
+        }
+        if (!usuarioActual.getActivo().equals(usuario.getActivo())) {
+            return true;
+        }
+        return false;
     }
 
 }
