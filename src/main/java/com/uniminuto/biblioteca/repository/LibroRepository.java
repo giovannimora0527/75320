@@ -36,4 +36,9 @@ public interface LibroRepository extends
      */
     List<Libro> findByAnioPublicacionBetween(Integer anioIni, Integer anioFin);
     
+    /**
+     * Consulta el libro por titulo.
+     */
+    boolean existsByTitulo(String titulo);
+    
 }

@@ -1,7 +1,8 @@
 package com.uniminuto.biblioteca.services;
 
 import com.uniminuto.biblioteca.entity.Libro;
-import java.time.LocalDateTime;
+import com.uniminuto.biblioteca.model.LibroRq;
+import com.uniminuto.biblioteca.model.RespuestaGenericaRs;
 import java.util.List;
 import org.apache.coyote.BadRequestException;
 
@@ -51,4 +52,20 @@ public interface LibroService {
      */
     List<Libro> obtenerLibroXRangoPublicacion(Integer anioIni, 
             Integer anioFin) throws BadRequestException;
+    
+    
+    /**
+     * Servicio que devuelve la lista de libros disponibles para prestamo.
+     * @return lista de libros disponibles.
+     * @throws BadRequestException excepcion. 
+     */
+    List<Libro> listarLibrosDisponibles() throws BadRequestException;
+    
+    /**
+     * 
+     * @param LibroRq
+     * @return
+     * @throws BadRequestException 
+     */
+    RespuestaGenericaRs crearLibro(LibroRq LibroRq) throws BadRequestException;
 }

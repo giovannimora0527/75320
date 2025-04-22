@@ -1,10 +1,13 @@
 package com.uniminuto.biblioteca.api;
 
 import com.uniminuto.biblioteca.entity.Libro;
+import com.uniminuto.biblioteca.model.LibroRq;
+import com.uniminuto.biblioteca.model.RespuestaGenericaRs;
 import java.util.List;
 import org.apache.coyote.BadRequestException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface LibroApi {
 
     /**
-     * Metodo para listar los autores registrados en bd.
+     * Metodo para listar los libros registrados en bd.
      *
      * @return Lista de libros registrados.
      * @throws BadRequestException excepcion.
@@ -87,6 +90,34 @@ public interface LibroApi {
     ResponseEntity<List<Libro>> obtenerLibroPorFechaPublicacion(
             @RequestParam Integer anioIni,
             @RequestParam Integer anioFin)
+            throws BadRequestException;
+    
+    /**
+     * Metodo para guardar un libro nuevo.
+     *
+     * @param LibroRq entrada.
+     * @return Respuesta del servicio.
+     * @throws BadRequestException excepcion.
+     */
+    @RequestMapping(value = "/crear-libro",
+            produces = {"application/json"},
+            consumes = {"application/json"},
+            method = RequestMethod.POST)
+    ResponseEntity<RespuestaGenericaRs> crearLibro(@RequestBody LibroRq LibroRq)
+            throws BadRequestException;
+    
+    
+    /**
+     * Metodo para listar los libros disponibles para prestamo.
+     *
+     * @return Lista de libros disponibles.
+     * @throws BadRequestException excepcion.
+     */
+    @RequestMapping(value = "/listar-for-prestamo",
+            produces = {"application/json"},
+            consumes = {"application/json"},
+            method = RequestMethod.GET)
+    ResponseEntity<List<Libro>> listarLibrosParaPrestamo()
             throws BadRequestException;
     
 }
