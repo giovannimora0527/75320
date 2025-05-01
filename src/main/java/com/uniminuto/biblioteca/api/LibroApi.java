@@ -1,22 +1,25 @@
 package com.uniminuto.biblioteca.api;
-
+ 
 import com.uniminuto.biblioteca.entity.Libro;
+import com.uniminuto.biblioteca.model.RespuestaGenerica;
+import com.uniminuto.biblioteca.model.LibroRq;
 import java.util.List;
 import org.apache.coyote.BadRequestException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
+ 
 /**
- *
- * @author lmora
- */
+*
+* @author lmora
+*/
 @CrossOrigin(origins = "*")
 @RequestMapping("/libro")
 public interface LibroApi {
-
+ 
     /**
      * Metodo para listar los autores registrados en bd.
      *
@@ -29,7 +32,7 @@ public interface LibroApi {
             method = RequestMethod.GET)
     ResponseEntity<List<Libro>> listarLibros()
             throws BadRequestException;
-
+ 
     /**
      * Metodo para listar los autores registrados en bd.
      *
@@ -43,7 +46,6 @@ public interface LibroApi {
             method = RequestMethod.GET)
     ResponseEntity<Libro> obtenerLibroPorId(@RequestParam Integer libroId)
             throws BadRequestException;
-    
     /**
      * Metodo para obtener los libros dado un autor.
      *
@@ -57,7 +59,6 @@ public interface LibroApi {
             method = RequestMethod.GET)
     ResponseEntity<List<Libro>> obtenerLibroPorAutor(@RequestParam Integer autorId)
             throws BadRequestException;
-    
     /**
      * Metodo para listar los libros dado un nombre.
      *
@@ -71,7 +72,6 @@ public interface LibroApi {
             method = RequestMethod.GET)
     ResponseEntity<Libro> obtenerLibroPorNombre(@RequestParam String nombreLibro)
             throws BadRequestException;
-    
     /**
      * Metodo para listar los libros dado un rango de fecha.
      *
@@ -88,5 +88,31 @@ public interface LibroApi {
             @RequestParam Integer anioIni,
             @RequestParam Integer anioFin)
             throws BadRequestException;
-    
+     /**
+     * 
+     * @param libro
+     * @return
+     * @throws BadRequestException 
+     */
+    @RequestMapping(value = "/guardar-libro",
+            produces = {"application/json"},
+            consumes = {"application/json"},
+            method = RequestMethod.POST)
+    ResponseEntity<RespuestaGenerica> guardarLibro(
+            @RequestBody LibroRq libro)
+            throws BadRequestException;
+    /**
+     * 
+     * @param libro
+     * @return
+     * @throws BadRequestException 
+     */
+    @RequestMapping(value = "/actualizar-libro",
+            produces = {"application/json"},
+            consumes = {"application/json"},
+            method = RequestMethod.PUT)
+    ResponseEntity<RespuestaGenerica> actualizarLibro(
+            @RequestBody Libro libro)
+            throws BadRequestException;
+
 }
