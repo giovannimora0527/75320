@@ -1,10 +1,13 @@
 package com.uniminuto.biblioteca.api;
 
 import com.uniminuto.biblioteca.entity.Libro;
+import com.uniminuto.biblioteca.model.RespuestaGenerica;
+import com.uniminuto.biblioteca.model.LibroRq;
 import java.util.List;
 import org.apache.coyote.BadRequestException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -88,5 +91,34 @@ public interface LibroApi {
             @RequestParam Integer anioIni,
             @RequestParam Integer anioFin)
             throws BadRequestException;
+    
+     /**
+     * 
+     * @param libro
+     * @return
+     * @throws BadRequestException 
+     */
+    @RequestMapping(value = "/guardar-libro",
+            produces = {"application/json"},
+            consumes = {"application/json"},
+            method = RequestMethod.POST)
+    ResponseEntity<RespuestaGenerica> guardarLibro(
+            @RequestBody LibroRq libro)
+            throws BadRequestException;
+    
+    /**
+     * 
+     * @param libro
+     * @return
+     * @throws BadRequestException 
+     */
+    @RequestMapping(value = "/actualizar-libro",
+            produces = {"application/json"},
+            consumes = {"application/json"},
+            method = RequestMethod.PUT)
+    ResponseEntity<RespuestaGenerica> actualizarLibro(
+            @RequestBody Libro libro)
+            throws BadRequestException;
+    
     
 }
