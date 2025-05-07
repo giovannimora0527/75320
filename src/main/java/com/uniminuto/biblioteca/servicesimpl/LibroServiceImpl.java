@@ -85,4 +85,13 @@ public class LibroServiceImpl implements LibroService {
 
         return this.libroRepository.findByAnioPublicacionBetween(fechaInicio, fechaFin);
     }
+
+    @Override
+    public List<Libro> obtenerLibrosDisponibles() throws BadRequestException {
+        List<Libro> disponibles = libroRepository.findByExistenciasGreaterThan(0);
+        if (disponibles.isEmpty()) {
+            throw new BadRequestException("No hay libros disponibles actualmente.");
+        }
+        return disponibles;
+    }
 }

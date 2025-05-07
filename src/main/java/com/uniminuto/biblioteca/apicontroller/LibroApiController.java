@@ -51,4 +51,10 @@ public class LibroApiController implements LibroApi {
                 .obtenerLibroXRangoPublicacion(anioIni, anioFin));
     }
 
+    @Override
+    public ResponseEntity<List<Libro>> obtenerLibrosDisponibles() throws BadRequestException {
+        List<Libro> disponibles = libroService.obtenerLibrosDisponibles();
+        return ResponseEntity.ok(disponibles);
+    }
+
 }

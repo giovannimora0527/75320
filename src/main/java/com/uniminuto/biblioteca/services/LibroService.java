@@ -51,4 +51,11 @@ public interface LibroService {
      */
     List<Libro> obtenerLibroXRangoPublicacion(Integer anioIni, 
             Integer anioFin) throws BadRequestException;
+    
+    /**
+    * Obtiene los libros que tienen al menos una existencia disponible.
+    * @return Lista de libros disponibles.
+    * @throws BadRequestException excepcion.
+    */
+    List<Libro> obtenerLibrosDisponibles() throws BadRequestException;
 }

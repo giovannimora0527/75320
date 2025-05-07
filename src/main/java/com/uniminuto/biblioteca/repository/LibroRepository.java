@@ -36,4 +36,6 @@ public interface LibroRepository extends
      */
     List<Libro> findByAnioPublicacionBetween(Integer anioIni, Integer anioFin);
     
+    List<Libro> findByExistenciasGreaterThan(Integer cantidad);
+    
 }
