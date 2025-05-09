@@ -11,8 +11,12 @@ import javax.persistence.Table;
 import lombok.Data;
 
 /**
- *
- * @author lmora
+ * Clase que representa un Autor en el sistema.
+ * Esta clase se mapea a la tabla "autores" en la base de datos.
+ * Contiene información sobre un autor, como su identificador, nombre,
+ * nacionalidad y fecha de nacimiento.
+ * 
+ * @author Sofía Pedraza
  */
 @Data
 @Entity
