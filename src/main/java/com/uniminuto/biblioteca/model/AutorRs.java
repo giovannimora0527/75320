@@ -4,7 +4,6 @@
  */
 package com.uniminuto.biblioteca.model;
 
-import java.time.LocalDate;
 import lombok.Data;
 
 /**
@@ -12,8 +11,6 @@ import lombok.Data;
  * @author Sofía Pedraza
  */
 @Data
-public class AutorRq {
-    private String nombre;
-    private String nacionalidad;
-    private LocalDate fechaNacimiento;
+public class AutorRs {
+    private String message;
 }
