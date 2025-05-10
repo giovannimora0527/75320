@@ -3,6 +3,7 @@ package com.uniminuto.biblioteca.api;
 import com.uniminuto.biblioteca.entity.Prestamo;
 import com.uniminuto.biblioteca.model.RespuestaGenerica;
 import com.uniminuto.biblioteca.model.PrestamoRq;
+import com.uniminuto.biblioteca.model.PrestamoRs;
 import java.util.List;
 import org.apache.coyote.BadRequestException;
 import org.springframework.http.ResponseEntity;
@@ -52,11 +53,10 @@ public interface PrestamoApi {
      * @return respuesta genérica.
      * @throws BadRequestException excepción.
      */
-    @RequestMapping(value = "/guardar-prestamo",
-            produces = {"application/json"},
-            consumes = {"application/json"},
-            method = RequestMethod.POST)
-    ResponseEntity<RespuestaGenerica> guardarPrestamo(@RequestBody PrestamoRq prestamo) throws BadRequestException;
+    @RequestMapping(value = "/prestar", produces = { "application/json" }, consumes = {
+                        "application/json" }, method = RequestMethod.POST)
+        ResponseEntity<PrestamoRs> guardarPrestamo(@RequestBody PrestamoRq prestamoRq)
+                        throws BadRequestException;
 
     /**
      * Método para actualizar un préstamo existente.

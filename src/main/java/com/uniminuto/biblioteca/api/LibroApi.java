@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
+import com.uniminuto.biblioteca.entity.LibroDisponibleProjection;
 /**
  *
  * @author lmora
@@ -120,5 +120,10 @@ public interface LibroApi {
             @RequestBody Libro libro)
             throws BadRequestException;
     
+    @RequestMapping(value = "/listar-disponibles",
+            produces = {"application/json"},
+            method = RequestMethod.GET)
+    ResponseEntity<List<LibroDisponibleProjection>> listarLibrosDisponibles()
+            throws BadRequestException;
     
 }

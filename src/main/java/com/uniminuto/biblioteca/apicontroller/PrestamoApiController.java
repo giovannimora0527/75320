@@ -3,6 +3,7 @@ package com.uniminuto.biblioteca.apicontroller;
 import com.uniminuto.biblioteca.api.PrestamoApi;
 import com.uniminuto.biblioteca.entity.Prestamo;
 import com.uniminuto.biblioteca.model.PrestamoRq;
+import com.uniminuto.biblioteca.model.PrestamoRs;
 import com.uniminuto.biblioteca.model.RespuestaGenerica;
 import com.uniminuto.biblioteca.services.PrestamoService;
 import java.util.List;
@@ -56,23 +57,9 @@ public class PrestamoApiController implements PrestamoApi {
      * {@inheritDoc}
      */
     @Override
-    public ResponseEntity<RespuestaGenerica> guardarPrestamo(PrestamoRq prestamoRq) throws BadRequestException {
-        try {
-            Prestamo nuevoPrestamo = new Prestamo();
-            nuevoPrestamo.setFechaPrestamo(prestamoRq.getFechaPrestamo());
-            nuevoPrestamo.setFechaDevolucion(prestamoRq.getFechaDevolucion());
-            nuevoPrestamo.setFechaEntrega(prestamoRq.getFechaEntrega());
-            nuevoPrestamo.setEstado(prestamoRq.getEstado());
-
-            prestamoService.guardarPrestamo(nuevoPrestamo);
-
-            RespuestaGenerica respuesta = new RespuestaGenerica();
-            respuesta.setMensaje("Préstamo guardado exitosamente.");
-            return ResponseEntity.ok(respuesta);
-
-        } catch (Exception e) {
-            throw new BadRequestException("Error al guardar préstamo: " + e.getMessage());
-        }
+    public ResponseEntity<PrestamoRs> guardarPrestamo(PrestamoRq prestamoRq) throws BadRequestException {
+        PrestamoRs response = prestamoService.guardarPrestamoNuevo(prestamoRq);
+        return ResponseEntity.ok(response);
     }
 
     /**

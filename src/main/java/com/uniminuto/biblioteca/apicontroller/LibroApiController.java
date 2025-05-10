@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import com.uniminuto.biblioteca.model.RespuestaGenerica;
 import com.uniminuto.biblioteca.model.LibroRq;
+import com.uniminuto.biblioteca.entity.LibroDisponibleProjection;
 
 /**
  *
@@ -63,4 +64,10 @@ public class LibroApiController implements LibroApi {
         return ResponseEntity.ok(this.libroService.actualizarLibro(libro));
 
 }
+    
+    @Override
+    public ResponseEntity<List<LibroDisponibleProjection>> listarLibrosDisponibles()
+            throws BadRequestException {
+        return ResponseEntity.ok(this.libroService.obtenerLibrosDisponibles());
+    }
 }

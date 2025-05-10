@@ -6,6 +6,7 @@ import com.uniminuto.biblioteca.model.LibroRq;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.apache.coyote.BadRequestException;
+import com.uniminuto.biblioteca.entity.LibroDisponibleProjection;
 
 /**
  *
@@ -57,4 +58,6 @@ public interface LibroService {
     RespuestaGenerica guardarLibro(LibroRq libro) throws BadRequestException;
 
     RespuestaGenerica actualizarLibro(Libro libro) throws BadRequestException;
+    
+    List<LibroDisponibleProjection> obtenerLibrosDisponibles() throws BadRequestException;
 }

@@ -13,6 +13,7 @@ import java.util.Optional;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.uniminuto.biblioteca.entity.LibroDisponibleProjection;
 
 @Service
 public class LibroServiceImpl implements LibroService {
@@ -177,5 +178,10 @@ public class LibroServiceImpl implements LibroService {
                !libroActual.getAutor().getAutorId().equals(libroNuevo.getAutor().getAutorId()) ||
                !libroActual.getCategoria().equals(libroNuevo.getCategoria()) ||
                !libroActual.getExistencias().equals(libroNuevo.getExistencias());
+    }
+    
+    @Override
+    public List<LibroDisponibleProjection> obtenerLibrosDisponibles() throws BadRequestException {
+        return this.libroRepository.findLibrosDisponibles();
     }
 }
