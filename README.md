@@ -1,4 +1,2 @@
 # 75320
-Taller Springboot para Uniminuto Porgramacion web
-
-gmora estuvo aqui :)
+Taller Springboot para Uniminuto Programacion web
