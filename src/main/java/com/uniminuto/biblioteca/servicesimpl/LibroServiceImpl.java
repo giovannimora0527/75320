@@ -36,7 +36,7 @@ public class LibroServiceImpl implements LibroService {
 
     @Autowired
     private PrestamoRepository prestamoRepository;
-    
+
     @Autowired
     private CategoriaRepository categoriaRepository;
 
@@ -114,6 +114,10 @@ public class LibroServiceImpl implements LibroService {
             listPrestamoByLibro = this.prestamoRepository.findByLibro(libro);
             // Verificar si no hay préstamos activos o si el préstamo está en estado DEVUELTO
             boolean libroDisponible = true;
+            if (libro.getExistencias() == 0) {
+                libroDisponible = false;
+                break; // Si hay al menos un préstamo prestado, el libro no está disponible
+            }
             for (Prestamo prestamo : listPrestamoByLibro) {
                 if (prestamo.getEstado() == EstadoPrestamo.PRESTADO) {
                     libroDisponible = false;
@@ -130,7 +134,7 @@ public class LibroServiceImpl implements LibroService {
     }
 
     @Override
-    public RespuestaGenericaRs crearLibro(LibroRq libroRq) throws BadRequestException {        
+    public RespuestaGenericaRs crearLibro(LibroRq libroRq) throws BadRequestException {
         if (this.libroRepository.existsByTitulo(libroRq.getTitulo())) {
             throw new BadRequestException("El libro se encuentra ya registrado");
         }
@@ -141,7 +145,7 @@ public class LibroServiceImpl implements LibroService {
         rta.setMessage("Se ha guardado el libro satisfactoriamente");
         return rta;
     }
-    
+
     private Libro convertirLibroRqToLibro(LibroRq libroRq) throws BadRequestException {
         Libro libro = new Libro();
         libro.setAnioPublicacion(libroRq.getAnioPublicacion());
@@ -156,5 +160,79 @@ public class LibroServiceImpl implements LibroService {
         libro.setTitulo(libroRq.getTitulo());
         libro.setExistencias(libroRq.getExistencias());
         return libro;
+    }
+
+    @Override
+    public RespuestaGenericaRs actualizarLibro(Libro actualizarLibro) throws BadRequestException {
+        Optional<Libro> optLibro = this.libroRepository.findById(actualizarLibro.getIdLibro());
+        if (!optLibro.isPresent()) {
+            throw new BadRequestException("No existe el libro con el ID proporcionado.");
+        }
+
+        Libro libroActual = optLibro.get();
+
+        // Verifica si hay cambios reales
+        if (!hayCambiosEnLibro(libroActual, actualizarLibro)) {
+            RespuestaGenericaRs rta = new RespuestaGenericaRs();
+            rta.setMessage("No se detectaron cambios en el libro.");
+            return rta;
+        }
+
+        // Si cambió el título, valida si ya existe otro libro con ese título
+        if (!libroActual.getTitulo().trim().equalsIgnoreCase(actualizarLibro.getTitulo().trim())
+                && this.libroRepository.existsByTitulo(actualizarLibro.getTitulo())) {
+            throw new BadRequestException("Ya existe un libro con el título '" + actualizarLibro.getTitulo() + "'.");
+        }
+
+        // Valida el autor
+        if (actualizarLibro.getAutor() == null || actualizarLibro.getAutor().getAutorId() == null) {
+            throw new BadRequestException("Debe especificar un autor válido.");
+        }
+        Autor autor = this.autorService.obtenerAutorPorId(actualizarLibro.getAutor().getAutorId());
+        if (autor == null) {
+            throw new BadRequestException("No existe el autor con ID " + actualizarLibro.getAutor().getAutorId());
+        }
+
+        // Valida la categoría
+        if (actualizarLibro.getCategoria() == null || actualizarLibro.getCategoria().getCategoriaId() == null) {
+            throw new BadRequestException("Debe especificar una categoría válida.");
+        }
+        Optional<Categoria> optCat = this.categoriaRepository.findById(actualizarLibro.getCategoria().getCategoriaId());
+        if (!optCat.isPresent()) {
+            throw new BadRequestException("No existe la categoría con ID " + actualizarLibro.getCategoria().getCategoriaId());
+        }
+        Categoria categoria = optCat.get();
+
+        // Actualiza los campos
+        libroActual.setTitulo(actualizarLibro.getTitulo());
+        libroActual.setAnioPublicacion(actualizarLibro.getAnioPublicacion());
+        libroActual.setAutor(autor);
+        libroActual.setCategoria(categoria);
+        libroActual.setExistencias(actualizarLibro.getExistencias());
+
+        this.libroRepository.save(libroActual);
+
+        RespuestaGenericaRs rta = new RespuestaGenericaRs();
+        rta.setMessage("Se ha actualizado el libro satisfactoriamente.");
+        return rta;
+    }
+
+    /**
+     * Funcion que valida si hay cambios en un registro.
+     *
+     * @param actual dato entrante de bd.
+     * @param nuevo dato desde el front.
+     * @return true/false si hay cambios.
+     */
+    private boolean hayCambiosEnLibro(Libro actual, Libro nuevo) {
+        if (nuevo.getAutor() == null || actual.getAutor() == null
+                || nuevo.getCategoria() == null || actual.getCategoria() == null) {
+            return true; // Si alguna de las relaciones es nula, consideramos que hay cambio
+        }
+        return !actual.getTitulo().equals(nuevo.getTitulo())
+                || !Objects.equals(actual.getAnioPublicacion(), nuevo.getAnioPublicacion())
+                || !actual.getAutor().getAutorId().equals(nuevo.getAutor().getAutorId())
+                || !actual.getCategoria().getCategoriaId().equals(nuevo.getCategoria().getCategoriaId())
+                || !actual.getExistencias().equals(nuevo.getExistencias());
     }
 }

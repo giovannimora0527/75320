@@ -63,7 +63,7 @@ public class Prestamo implements Serializable {
     /**
      * Fecha límite de devolución.
      */
-    @Column(name = "fecha_entrega", nullable = false)
+    @Column(name = "fecha_entrega")
     private LocalDateTime fechaEntrega;
 
     /**

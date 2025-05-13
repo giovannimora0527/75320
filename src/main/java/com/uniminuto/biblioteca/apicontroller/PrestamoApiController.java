@@ -17,24 +17,24 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class PrestamoApiController implements PrestamoApi {
-    
+
     @Autowired
     private PrestamoService prestamoService;
 
     @Override
     public ResponseEntity<List<Prestamo>> listarPrestamos() throws BadRequestException {
-       return ResponseEntity.ok(this.prestamoService.listarPrestamos());
+        return ResponseEntity.ok(this.prestamoService.listarPrestamos());
     }
 
     @Override
-    public ResponseEntity<RespuestaGenericaRs> crearPrestamo(PrestamoRq prestamoRq) 
+    public ResponseEntity<RespuestaGenericaRs> crearPrestamo(PrestamoRq prestamoRq)
             throws BadRequestException {
         return ResponseEntity.ok(this.prestamoService.crearPrestamo(prestamoRq));
     }
 
     @Override
-    public ResponseEntity<RespuestaGenericaRs> actualizarPrestamo(PrestamoRq prestamoRq) throws BadRequestException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public ResponseEntity<RespuestaGenericaRs> actualizarPrestamo(Prestamo prestamo) throws BadRequestException {
+        return ResponseEntity.ok(this.prestamoService.entregarLibro(prestamo));
     }
-    
+
 }

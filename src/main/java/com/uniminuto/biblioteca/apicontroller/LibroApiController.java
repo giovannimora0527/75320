@@ -63,4 +63,10 @@ public class LibroApiController implements LibroApi {
        return ResponseEntity.ok(this.libroService.listarLibrosDisponibles());
     }
 
+    @Override
+    public ResponseEntity<RespuestaGenericaRs> actualizarLibro(Libro libro) 
+            throws BadRequestException {
+        return ResponseEntity.ok(this.libroService.actualizarLibro(libro));
+    }
+
 }

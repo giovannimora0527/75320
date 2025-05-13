@@ -11,9 +11,12 @@ import org.apache.coyote.BadRequestException;
  * @author lmora
  */
 public interface PrestamoService {
-    
+
     List<Prestamo> listarPrestamos() throws BadRequestException;
-    
-    RespuestaGenericaRs crearPrestamo(PrestamoRq prestamoRq) 
+
+    RespuestaGenericaRs crearPrestamo(PrestamoRq prestamoRq)
+            throws BadRequestException;
+
+    RespuestaGenericaRs entregarLibro(Prestamo prestamo)
             throws BadRequestException;
 }

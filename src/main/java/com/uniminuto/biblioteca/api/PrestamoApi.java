@@ -32,10 +32,10 @@ public interface PrestamoApi {
     ResponseEntity<RespuestaGenericaRs> crearPrestamo(@RequestBody PrestamoRq prestamoRq) 
             throws BadRequestException;
     
-    @RequestMapping(value = "/actualizar",
+    @RequestMapping(value = "/entregar",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<RespuestaGenericaRs> actualizarPrestamo(@RequestBody PrestamoRq prestamoRq) 
+    ResponseEntity<RespuestaGenericaRs> actualizarPrestamo(@RequestBody Prestamo prestamo) 
             throws BadRequestException;
 }

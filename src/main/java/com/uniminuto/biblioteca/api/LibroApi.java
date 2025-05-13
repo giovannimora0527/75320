@@ -120,4 +120,19 @@ public interface LibroApi {
     ResponseEntity<List<Libro>> listarLibrosParaPrestamo()
             throws BadRequestException;
     
+    
+    /**
+     * Metodo para actualizar un libro nuevo.
+     *
+     * @param Libro entrada.
+     * @return Respuesta del servicio.
+     * @throws BadRequestException excepcion.
+     */
+    @RequestMapping(value = "/actualizar-libro",
+            produces = {"application/json"},
+            consumes = {"application/json"},
+            method = RequestMethod.POST)
+    ResponseEntity<RespuestaGenericaRs> actualizarLibro(@RequestBody Libro Libro)
+            throws BadRequestException;
+    
 }

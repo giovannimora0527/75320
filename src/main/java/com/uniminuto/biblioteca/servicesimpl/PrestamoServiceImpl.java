@@ -13,6 +13,7 @@ import com.uniminuto.biblioteca.utils.DateFormatterService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
@@ -58,25 +59,28 @@ public class PrestamoServiceImpl implements PrestamoService {
         }
 
         Libro libroPrestar = optLibro.get();
-        List<Prestamo> prestamosActivos = prestamoRepository.findByLibroAndEstadoIn(libroPrestar, 
-        List.of(Prestamo.EstadoPrestamo.PRESTADO, Prestamo.EstadoPrestamo.VENCIDO));
+        List<Prestamo> prestamosActivos = prestamoRepository.findByLibroAndEstadoIn(libroPrestar,
+                List.of(Prestamo.EstadoPrestamo.PRESTADO, Prestamo.EstadoPrestamo.VENCIDO));
         if (prestamosActivos.size() >= libroPrestar.getExistencias()) {
-            throw new BadRequestException("No se puede prestar el libro " 
-                    + libroPrestar.getTitulo() 
+            throw new BadRequestException("No se puede prestar el libro "
+                    + libroPrestar.getTitulo()
                     + ", porque no hay existencias en stock");
         }
 
         Prestamo prestamoNuevo = new Prestamo();
         prestamoNuevo.setEstado(Prestamo.EstadoPrestamo.PRESTADO);
-        LocalDate fecha = dateFormatterService.parseStringToLocalDate(prestamoRq.getFechaDevolucion(), "yyyy-MM-dd");
+        LocalDate fecha = dateFormatterService
+                .parseStringToLocalDate(prestamoRq.getFechaDevolucion(), "yyyy-MM-dd");
         LocalTime horaActual = LocalTime.now(); // hora del sistema
         LocalDateTime fechaDevolucion = fecha.atTime(horaActual);
         prestamoNuevo.setFechaDevolucion(fechaDevolucion);
         LocalDateTime ahora = LocalDateTime.now();
         LocalDateTime minimoFechaDevolucion = ahora.plusHours(24);
 
-        if (prestamoNuevo.getFechaDevolucion().isBefore(minimoFechaDevolucion)) {
-            throw new BadRequestException("La fecha de devolución debe ser al menos 1 día después de la fecha actual.");
+        if (prestamoNuevo.getFechaDevolucion()
+                .isBefore(minimoFechaDevolucion)) {
+            throw new BadRequestException("La fecha de devolución debe ser al "
+                    + "menos 1 día después de la fecha actual.");
         }
 
         prestamoNuevo.setFechaPrestamo(LocalDateTime.now());
@@ -86,6 +90,35 @@ public class PrestamoServiceImpl implements PrestamoService {
         RespuestaGenericaRs rta = new RespuestaGenericaRs();
         rta.setStatus(200);
         rta.setMessage("Se ha registrado el prestamo satisfactoriamente");
+        return rta;
+    }
+
+    @Override
+    public RespuestaGenericaRs entregarLibro(Prestamo prestamo)
+            throws BadRequestException {
+        if (prestamo == null) {
+            throw new BadRequestException("El objeto no puede ser nulo");
+        }
+        LocalDateTime fechaActual = LocalDateTime.now();
+        if (prestamo.getFechaEntrega().isAfter(fechaActual)) {
+            DateTimeFormatter formatter = DateTimeFormatter
+                    .ofPattern("yyyy-MM-dd HH:mm:ss");
+            throw new BadRequestException("La fecha entrega no puede "
+                    + "ser mayor a la fecha actual del sistema: "
+                    + fechaActual.format(formatter));
+        }
+
+        if (fechaActual.isAfter(prestamo.getFechaDevolucion())) {
+            prestamo.setEstado(Prestamo.EstadoPrestamo.VENCIDO);
+        } else {
+            prestamo.setEstado(Prestamo.EstadoPrestamo.DEVUELTO);
+        }
+        
+        prestamo.setFechaEntrega(prestamo.getFechaEntrega());
+        this.prestamoRepository.save(prestamo);
+        RespuestaGenericaRs rta = new RespuestaGenericaRs();
+        rta.setStatus(200);
+        rta.setMessage("Se ha realizado la entrega del libro satisfactoriamente");
         return rta;
     }
 
