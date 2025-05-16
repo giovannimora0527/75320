@@ -1,7 +1,4 @@
-/**
- * 
- * @author Sofía Pedraza
- */
+
 package com.uniminuto.biblioteca.model;
 
 import java.time.LocalDate;
