@@ -1,6 +1,4 @@
-/**
- * @author Sofía Pedraza
-*/
+
 package com.uniminuto.biblioteca.apicontroller;
 
 import com.uniminuto.biblioteca.api.PrestamoApi;
