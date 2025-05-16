@@ -1,7 +1,4 @@
-/**
- *
- * @author Sofía Pedraza
- */
+
 package com.uniminuto.biblioteca.servicesimpl;
 
 import com.uniminuto.biblioteca.entity.Prestamo;
