@@ -88,10 +88,10 @@ public class LibroServiceImpl implements LibroService {
 
     @Override
     public List<Libro> obtenerLibrosDisponibles() throws BadRequestException {
-        List<Libro> disponibles = libroRepository.findByExistenciasGreaterThan(0);
-        if (disponibles.isEmpty()) {
-            throw new BadRequestException("No hay libros disponibles actualmente.");
-        }
-        return disponibles;
+    List<Libro> disponibles = libroRepository.findLibrosDisponibles();
+    if (disponibles.isEmpty()) {
+        throw new BadRequestException("No hay libros disponibles actualmente.");
+    }
+    return disponibles;
     }
 }

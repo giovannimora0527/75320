@@ -10,6 +10,6 @@ import org.springframework.data.repository.query.Param;
  * @author Angie Vanegas Nieto
  */
 public interface PrestamoRepository extends JpaRepository<Prestamo, Integer> {
-@Query("SELECT COUNT(p) FROM Prestamo p WHERE p.libro.id = :libroId AND p.estado = 'PRESTADO'")
-int contarPrestamosActivosPorLibro(@Param("libroId") Integer libroId);    
+@Query("SELECT COUNT(p) FROM Prestamo p WHERE p.libro.id = :libroId AND (p.estado = 'PRESTADO')")
+int contarPrestamosPorLibro(@Param("libroId") Integer libroId);   
 }

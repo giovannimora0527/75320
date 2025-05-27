@@ -30,7 +30,6 @@ public class Prestamo implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_prestamo")
     private Integer idPrestamo;
-    
     /**
      * Se define una relación de "muchos a uno" entre dos entidades
      */

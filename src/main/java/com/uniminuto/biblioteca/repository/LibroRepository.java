@@ -4,6 +4,7 @@ import com.uniminuto.biblioteca.entity.Autor;
 import com.uniminuto.biblioteca.entity.Libro;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -37,5 +38,17 @@ public interface LibroRepository extends
     List<Libro> findByAnioPublicacionBetween(Integer anioIni, Integer anioFin);
     
     List<Libro> findByExistenciasGreaterThan(Integer cantidad);
+    
+    @Query("""
+    SELECT l FROM Libro l
+    WHERE l.existencias > (
+        SELECT COUNT(p) FROM Prestamo p
+        WHERE p.libro.id = l.id AND p.estado = 'PRESTADO'
+    )
+""")
+    List<Libro> findLibrosDisponibles();
+
+    //servicio para evitar duplicados al cargar libros
+    boolean existsByTitulo(String titulo);
     
 }
