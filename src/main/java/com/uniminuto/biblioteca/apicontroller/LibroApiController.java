@@ -4,6 +4,8 @@ import com.uniminuto.biblioteca.api.LibroApi;
 import java.util.List;
 import org.springframework.web.bind.annotation.RestController;
 import com.uniminuto.biblioteca.entity.Libro;
+import com.uniminuto.biblioteca.model.LibroRq;
+import com.uniminuto.biblioteca.model.RespuestaGenericaRs;
 import com.uniminuto.biblioteca.services.LibroService;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +34,7 @@ public class LibroApiController implements LibroApi {
     }
 
     @Override
-    public ResponseEntity<List<Libro>>
-            obtenerLibroPorAutor(Integer autorId) throws BadRequestException {
+    public ResponseEntity<List<Libro>> obtenerLibroPorAutor(Integer autorId) throws BadRequestException {
         return ResponseEntity.ok(this.libroService.obtenerLibrosPorAutor(autorId));
     }
 
@@ -49,6 +50,27 @@ public class LibroApiController implements LibroApi {
             throws BadRequestException {
         return ResponseEntity.ok(this.libroService
                 .obtenerLibroXRangoPublicacion(anioIni, anioFin));
+    }
+
+    @Override
+    public ResponseEntity<RespuestaGenericaRs> crearLibro(LibroRq LibroRq) throws BadRequestException {
+        return ResponseEntity.ok(this.libroService.crearLibro(LibroRq));
+    }
+
+    @Override
+    public ResponseEntity<List<Libro>> listarLibrosParaPrestamo() throws BadRequestException {
+        return ResponseEntity.ok(this.libroService.listarLibrosDisponibles());
+    }
+
+    @Override
+    public ResponseEntity<RespuestaGenericaRs> actualizarLibro(Libro libro)
+            throws BadRequestException {
+        return ResponseEntity.ok(this.libroService.actualizarLibro(libro));
+    }
+
+    @Override
+    public ResponseEntity<List<Libro>> cargarLibrosMasivo(List<LibroRq> libros) throws BadRequestException {
+        return ResponseEntity.ok(this.libroService.guardarLibrosMasivo(libros));
     }
 
 }

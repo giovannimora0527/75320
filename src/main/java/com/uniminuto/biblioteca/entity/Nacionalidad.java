@@ -1,7 +1,6 @@
 package com.uniminuto.biblioteca.entity;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,42 +12,30 @@ import javax.persistence.Table;
 import lombok.Data;
 
 /**
- *
- * @author lmora
+ * Entidad que representa una nacionalidad.
+ * 
+ * Mapea la tabla 'nacionalidad' de la base de datos.
  */
-@Data
 @Entity
-@Table(name = "autores")
-public class Autor implements Serializable {
-    /**
-     * Id serializable.
-     */
+@Table(name = "nacionalidad")
+@Data
+public class Nacionalidad implements Serializable {
+
     private static final long serialVersionUID = 1L;
-    
+
     /**
-     * Identificador único del autor.
+     * Identificador único de la nacionalidad.
+     * Es la clave primaria de la tabla.
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_autor")
-    private Integer autorId;
-    
+    @Column(name = "nacionalidad_id")
+    private Integer nacionalidadId;
+
     /**
-     * Nombre del autor.
+     * Nombre de la nacionalidad.
+     * No puede ser nulo y tiene una longitud máxima de 100 caracteres.
      */
     @Column(name = "nombre", nullable = false, length = 100)
     private String nombre;
-    
-    /**
-     * Nacionalidad del autor.
-     */    
-    @ManyToOne
-    @JoinColumn(name = "nacionalidad_id", nullable = false)
-    private Nacionalidad nacionalidad;
-    
-    /**
-     * Fecha de nacimiento del autor.
-     */
-    @Column(name = "fecha_nacimiento")
-    private LocalDate fechaNacimiento;
 }

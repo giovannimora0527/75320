@@ -41,9 +41,10 @@ public class Libro implements Serializable {
     @Column(name = "anio_publicacion")
     private Integer anioPublicacion;
 
-    /** Categoría a la que pertenece el libro. */
-    @Column(name = "categoria", length = 100)
-    private String categoria;
+    /** Categoría a la que pertenece el libro. */    
+    @ManyToOne
+    @JoinColumn(name = "categoria_id", nullable = false)
+    private Categoria categoria;
 
     /** Cantidad de ejemplares disponibles del libro. */
     @Column(name = "existencias", nullable = false)

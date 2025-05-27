@@ -15,7 +15,7 @@ public class BibliotecaServiceImpl implements BibliotecaService {
     public TestRs probarApi() {
         TestRs testRs = new TestRs();
         testRs.setStatus(200);
-        testRs.setMessage("Mi servicio funciona melo");
+        testRs.setMessage("Esto es la verg+ mi hermano");
         return testRs;
     }
     

@@ -1,4 +1,3 @@
-
 package com.uniminuto.biblioteca.model;
 
 import lombok.Data;
@@ -8,7 +7,9 @@ import lombok.Data;
  * @author lmora
  */
 @Data
-public class TestRs {
-    private Integer status;
+public class AutorRs {
+    /**
+     * Mensaje del servicio.
+     */
     private String message;
 }
