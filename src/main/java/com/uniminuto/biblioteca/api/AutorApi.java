@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * API para la gestión de autores
@@ -57,4 +58,12 @@ public interface AutorApi {
                     consumes = "application/json", 
                     produces = "application/json")
     ResponseEntity<RespuestaGenerica> actualizarAutor(@RequestBody AutorRq autor) throws BadRequestException;
+    
+    
+    @RequestMapping(value = "/cargar-autores",
+        method = RequestMethod.POST,
+        consumes = {"multipart/form-data"},
+        produces = {"application/json"})
+    ResponseEntity<?> cargarAutoresDesdeCsv(@RequestParam("file") MultipartFile file)
+        throws BadRequestException;
 }

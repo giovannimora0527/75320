@@ -1,9 +1,12 @@
 package com.uniminuto.biblioteca.services;
 
 import com.uniminuto.biblioteca.entity.Libro;
+import com.uniminuto.biblioteca.model.CargaMasivaError;
+import com.uniminuto.biblioteca.model.LibroRs;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.apache.coyote.BadRequestException;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -15,7 +18,7 @@ public interface LibroService {
      * @return Lista de libros registrados.
      * @throws BadRequestException excepcion.
      */
-    List<Libro> listarLibros() throws BadRequestException;
+    List<LibroRs> listarLibros() throws BadRequestException;
     
     /**
      * Obtiene un libro dado su id.
@@ -51,4 +54,9 @@ public interface LibroService {
      */
     List<Libro> obtenerLibroXRangoPublicacion(Integer anioIni, 
             Integer anioFin) throws BadRequestException;
+    
+    /*
+     * Servicio para subir el archivo .csv con los registros de autores
+    */
+    List<CargaMasivaError> cargarLibrosDesdeCsv(MultipartFile file);
 }

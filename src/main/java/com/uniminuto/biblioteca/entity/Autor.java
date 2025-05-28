@@ -36,7 +36,7 @@ public class Autor implements Serializable {
     /**
      * Nombre del autor.
      */
-    @Column(name = "nombre", nullable = false, length = 100)
+    @Column(name = "nombre", nullable = false, length = 100, unique = true)
     private String nombre;
     
     /**

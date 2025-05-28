@@ -4,10 +4,14 @@ import com.uniminuto.biblioteca.api.LibroApi;
 import java.util.List;
 import org.springframework.web.bind.annotation.RestController;
 import com.uniminuto.biblioteca.entity.Libro;
+import com.uniminuto.biblioteca.model.CargaMasivaError;
+import com.uniminuto.biblioteca.model.LibroRs;
+import com.uniminuto.biblioteca.model.RespuestaGenerica;
 import com.uniminuto.biblioteca.services.LibroService;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -20,7 +24,7 @@ public class LibroApiController implements LibroApi {
     private LibroService libroService;
 
     @Override
-    public ResponseEntity<List<Libro>> listarLibros()
+    public ResponseEntity<List<LibroRs>> listarLibros()
             throws BadRequestException {
         return ResponseEntity.ok(this.libroService.listarLibros());
     }
@@ -49,6 +53,17 @@ public class LibroApiController implements LibroApi {
             throws BadRequestException {
         return ResponseEntity.ok(this.libroService
                 .obtenerLibroXRangoPublicacion(anioIni, anioFin));
+    }
+    
+    @Override
+    public ResponseEntity<?> cargarLibrosDesdeCsv(MultipartFile file) throws BadRequestException {
+        List<CargaMasivaError> errores = libroService.cargarLibrosDesdeCsv(file);
+
+        if (!errores.isEmpty()) {
+            return ResponseEntity.badRequest().body(errores);
+        }
+
+        return ResponseEntity.ok(new RespuestaGenerica("Libros cargados correctamente"));
     }
 
 }

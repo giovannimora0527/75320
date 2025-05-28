@@ -2,6 +2,7 @@ package com.uniminuto.biblioteca.apicontroller;
 
 import com.uniminuto.biblioteca.api.UsuarioApi;
 import com.uniminuto.biblioteca.entity.Usuario;
+import com.uniminuto.biblioteca.model.CargaMasivaError;
 import com.uniminuto.biblioteca.model.RespuestaGenerica;
 import com.uniminuto.biblioteca.model.UsuarioRq;
 import com.uniminuto.biblioteca.services.UsuarioService;
@@ -10,6 +11,7 @@ import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -44,4 +46,14 @@ public class UsuarioApiController implements UsuarioApi {
         return ResponseEntity.ok(this.usuarioService.actualizarUsuario(usuario));
     }
     
+    @Override
+    public ResponseEntity<?> cargarUsuariosDesdeCsv(MultipartFile file) throws BadRequestException {
+        List<CargaMasivaError> errores = usuarioService.cargarUsuariosDesdeCsv(file);
+
+        if (!errores.isEmpty()) {
+            return ResponseEntity.badRequest().body(errores);
+        }
+
+        return ResponseEntity.ok(new RespuestaGenerica("Usuarios cargados correctamente"));
+    }
 }

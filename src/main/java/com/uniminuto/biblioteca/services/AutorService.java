@@ -3,9 +3,11 @@ package com.uniminuto.biblioteca.services;
 import com.uniminuto.biblioteca.entity.Autor;
 import com.uniminuto.biblioteca.model.AutorRq;
 import com.uniminuto.biblioteca.model.AutorRs;
+import com.uniminuto.biblioteca.model.CargaMasivaError;
 import com.uniminuto.biblioteca.model.RespuestaGenerica;
 import java.util.List;
 import org.apache.coyote.BadRequestException;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -46,6 +48,11 @@ public interface AutorService {
     List<Autor> obtenerListadoAutores();
     
     List<Autor> obtenerListadoAutoresPorNacionalidad(String nacionalidad) throws BadRequestException;
+    
+    /*
+     * Servicio para subir el archivo .csv con los registros de autores
+    */
+    List<CargaMasivaError> cargarAutoresDesdeCsv(MultipartFile file);
     
     Autor obtenerAutorPorId(Integer autorId) throws BadRequestException;
 }

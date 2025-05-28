@@ -23,4 +23,6 @@ public interface AutorRepository extends
     List<Autor> findAllByOrderByFechaNacimientoAsc();
     
     List<Autor> findAllByOrderByFechaNacimientoDesc();
+    
+    boolean existsByNombre(String nombre);
 }

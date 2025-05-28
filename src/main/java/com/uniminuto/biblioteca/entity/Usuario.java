@@ -47,7 +47,7 @@ public class Usuario implements Serializable {
     /**
      * Número de teléfono del usuario (opcional).
      */
-    @Column(name = "telefono", length = 20)
+    @Column(name = "telefono", nullable = false, length = 20)
     private String telefono;
 
     /**

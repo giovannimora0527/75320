@@ -29,12 +29,12 @@ public class Libro implements Serializable {
     private Integer idLibro;
 
     /** Título del libro. */
-    @Column(name = "titulo", nullable = false, length = 200)
+    @Column(name = "titulo", nullable = false, length = 200, unique = true)
     private String titulo;
 
     /** Autor del libro (clave foránea que referencia a la entidad Autor). */
     @ManyToOne
-    @JoinColumn(name = "id_autor", nullable = false)
+    @JoinColumn(name = "id_autor", nullable = true)
     private Autor autor;
 
     /** Año de publicación del libro. */

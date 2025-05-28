@@ -1,6 +1,7 @@
 package com.uniminuto.biblioteca.api;
 
 import com.uniminuto.biblioteca.entity.Libro;
+import com.uniminuto.biblioteca.model.LibroRs;
 import java.util.List;
 import org.apache.coyote.BadRequestException;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -33,7 +35,7 @@ public interface LibroApi {
             produces = {"application/json"},
             /*consumes = {"application/json"},*/
             method = RequestMethod.GET)
-    ResponseEntity<List<Libro>> listarLibros()
+    ResponseEntity<List<LibroRs>> listarLibros() 
             throws BadRequestException;
 
     /**
@@ -93,6 +95,13 @@ public interface LibroApi {
     ResponseEntity<List<Libro>> obtenerLibroPorFechaPublicacion(
             @RequestParam Integer anioIni,
             @RequestParam Integer anioFin)
+            throws BadRequestException;
+    
+    @RequestMapping(value = "/cargar-libros",
+            method = RequestMethod.POST,
+            consumes = {"multipart/form-data"},
+            produces = {"application/json"})
+    ResponseEntity<?> cargarLibrosDesdeCsv(@RequestParam("file") MultipartFile file)
             throws BadRequestException;
     
 }

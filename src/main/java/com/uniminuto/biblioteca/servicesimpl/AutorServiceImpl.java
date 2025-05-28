@@ -4,9 +4,14 @@ import com.uniminuto.biblioteca.entity.Autor;
 import com.uniminuto.biblioteca.entity.Libro;
 import com.uniminuto.biblioteca.model.AutorRq;
 import com.uniminuto.biblioteca.model.AutorRs;
+import com.uniminuto.biblioteca.model.CargaMasivaError;
 import com.uniminuto.biblioteca.model.RespuestaGenerica;
 import com.uniminuto.biblioteca.repository.AutorRepository;
 import com.uniminuto.biblioteca.services.AutorService;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -14,6 +19,7 @@ import java.util.stream.Collectors;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -27,21 +33,21 @@ public class AutorServiceImpl implements AutorService {
     
     @Override
     public List<AutorRs> listarAutores() throws BadRequestException {
-    return autorRepository.findAll().stream().map(autor -> {
-        AutorRs dto = new AutorRs();
-        dto.setNombre(autor.getNombre());
-        dto.setFechaNacimiento(autor.getFechaNacimiento());
-        dto.setNacionalidad(autor.getNacionalidad());
+        return autorRepository.findAll().stream().map(autor -> {
+            AutorRs dto = new AutorRs();
+            dto.setNombre(autor.getNombre());
+            dto.setFechaNacimiento(autor.getFechaNacimiento());
+            dto.setNacionalidad(autor.getNacionalidad());
 
-        List<Libro> libros = autor.getLibros();
-        dto.setNumeroLibros(libros.size());
-        dto.setTitulosLibros(libros.stream()
-            .map(Libro::getTitulo)
-            .collect(Collectors.toList()));
+            List<Libro> libros = autor.getLibros();
+            dto.setNumeroLibros(libros.size());
+            dto.setTitulosLibros(libros.stream()
+                .map(Libro::getTitulo)
+                .collect(Collectors.toList()));
 
-        return dto;
-    }).collect(Collectors.toList());
-}
+            return dto;
+        }).collect(Collectors.toList());
+    }
 
     @Override
     public RespuestaGenerica guardarAutor(AutorRq autor) throws BadRequestException {
@@ -116,5 +122,78 @@ public class AutorServiceImpl implements AutorService {
         }
         return optAutor.get();
     }
+    
+    @Override
+    public List<CargaMasivaError> cargarAutoresDesdeCsv(MultipartFile file) {
+        List<CargaMasivaError> errores = new ArrayList<>();
+        List<Autor> autoresValidos = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
+            String linea;
+            int numeroLinea = 0;
+
+            // Saltar encabezado
+            reader.readLine();
+            numeroLinea++;
+
+            while ((linea = reader.readLine()) != null) {
+                numeroLinea++;
+                String[] campos = linea.split(",", -1);
+
+                String nombre = campos.length > 0 ? campos[0].trim().replace("\"", "") : "";
+                String fechaNacimientoStr = campos.length > 1 ? campos[1].trim().replace("\"", "") : "";
+                String nacionalidad = campos.length > 2 ? campos[2].trim().replace("\"", "") : "";
+
+                boolean tieneError = false;
+
+                if (nombre.isEmpty()) {
+                    errores.add(new CargaMasivaError(numeroLinea, "El campo nombre es obligatorio (línea " + numeroLinea + ")"));
+                    tieneError = true;
+                }
+
+                if (fechaNacimientoStr.isEmpty()) {
+                    errores.add(new CargaMasivaError(numeroLinea, "El campo fecha de nacimiento es obligatorio (línea " + numeroLinea + ")"));
+                    tieneError = true;
+                }
+
+                if (nacionalidad.isEmpty()) {
+                    errores.add(new CargaMasivaError(numeroLinea, "El campo nacionalidad es obligatorio (línea " + numeroLinea + ")"));
+                    tieneError = true;
+                }
+
+                if (tieneError) continue;
+                
+                if (autorRepository.existsByNombre(nombre)) {
+                    errores.add(new CargaMasivaError(numeroLinea, "Ya existe un autor con el nombre '" + nombre + "'"));
+                    continue;
+                }
+
+                try {
+                    LocalDate fechaNacimiento = LocalDate.parse(fechaNacimientoStr);
+
+                    Autor autor = new Autor();
+                    autor.setNombre(nombre);
+                    autor.setFechaNacimiento(fechaNacimiento);
+                    autor.setNacionalidad(nacionalidad);
+
+                    autoresValidos.add(autor);
+
+                } catch (Exception ex) {
+                    errores.add(new CargaMasivaError(numeroLinea, "Formato incorrecto en fecha de nacimiento (línea " + numeroLinea + ")"));
+                }
+            }
+
+        } catch (Exception e) {
+            errores.add(new CargaMasivaError(0, "Error al leer el archivo: " + e.getMessage()));
+        }
+
+        if (!errores.isEmpty()) {
+            return errores;
+        }
+
+        autorRepository.saveAll(autoresValidos);
+        return errores;
+    }
+
 
 }

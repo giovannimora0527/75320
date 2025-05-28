@@ -1,17 +1,22 @@
 package com.uniminuto.biblioteca.servicesimpl;
 
 import com.uniminuto.biblioteca.entity.Usuario;
+import com.uniminuto.biblioteca.model.CargaMasivaError;
 import com.uniminuto.biblioteca.model.RespuestaGenerica;
 import com.uniminuto.biblioteca.model.UsuarioRq;
 import com.uniminuto.biblioteca.repository.UsuarioRepository;
 import com.uniminuto.biblioteca.services.UsuarioService;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -168,5 +173,91 @@ public class UsuarioServiceImpl implements UsuarioService {
         }
         return false;
     }
+    
+    @Override
+    public List<CargaMasivaError> cargarUsuariosDesdeCsv(MultipartFile file) {
+        List<CargaMasivaError> errores = new ArrayList<>();
+        List<Usuario> usuariosValidos = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
+            String linea;
+            int numeroLinea = 0;
+
+            // Saltar cabecera
+            reader.readLine();
+            numeroLinea++;
+
+            while ((linea = reader.readLine()) != null) {
+                numeroLinea++;
+                String[] campos = linea.split(",", -1);
+                
+                System.out.println("Línea " + numeroLinea + ":");
+                for (int i = 0; i < campos.length; i++) {
+                    System.out.println("  Campo[" + i + "]: '" + campos[i] + "'");
+                }
+
+                String nombre = campos.length > 0 ? campos[0].trim() : "";
+                String correo = campos.length > 1 ? campos[1].trim() : "";
+                String telefono = campos.length > 2 ? campos[2].trim() : "";
+                String fechaRegistroStr = campos.length > 3 ? campos[3].trim() : "";
+
+                boolean tieneError = false;
+
+                if (nombre.isEmpty()) {
+                    errores.add(new CargaMasivaError(numeroLinea, "El campo nombre es obligatorio"));
+                    tieneError = true;
+                }
+                if (correo.isEmpty()) {
+                    errores.add(new CargaMasivaError(numeroLinea, "El campo correo es obligatorio"));
+                    tieneError = true;
+                }
+                if (telefono.isEmpty()) {
+                    errores.add(new CargaMasivaError(numeroLinea, "El campo teléfono es obligatorio"));
+                    tieneError = true;
+                }
+                if (fechaRegistroStr.isEmpty()) {
+                    errores.add(new CargaMasivaError(numeroLinea, "El campo fechaRegistro es obligatorio"));
+                    tieneError = true;
+                }
+
+                if (tieneError) continue;
+                
+                // Validación envio mensaje de error de existencia de usurio por dato repetido
+                if (usuarioRepository.existsByCorreo(correo)) {
+                    errores.add(new CargaMasivaError(numeroLinea, "El usuario con el correo '" + correo + "' ya está registrado."));
+                    continue;
+                }
+
+                try {
+                    LocalDateTime fechaRegistro = LocalDateTime.parse(fechaRegistroStr);
+
+                    Usuario usuario = new Usuario();
+                    usuario.setNombre(nombre);
+                    usuario.setCorreo(correo);
+                    usuario.setTelefono(telefono);
+                    usuario.setFechaRegistro(fechaRegistro);
+                    usuario.setActivo(true);
+
+                    usuariosValidos.add(usuario);
+
+                } catch (Exception ex) {
+                    errores.add(new CargaMasivaError(numeroLinea, "Formato incorrecto en fechaRegistro"));
+                }
+            }
+
+        } catch (Exception e) {
+            errores.add(new CargaMasivaError(0, "Error al leer el archivo: " + e.getMessage()));
+        }
+
+        // No guardar nada si hay errores
+        if (!errores.isEmpty()) {
+            return errores;
+        }
+
+        // Guarda todos los registros csv si no hubo errores
+        usuarioRepository.saveAll(usuariosValidos);
+        return errores;
+    }
+
 
 }

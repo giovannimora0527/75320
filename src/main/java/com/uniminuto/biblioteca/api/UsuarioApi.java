@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -75,5 +76,19 @@ public interface UsuarioApi {
     ResponseEntity<RespuestaGenerica> actualizarUsuario(
             @RequestBody Usuario usuario)
             throws BadRequestException;
+    
+    /**
+     * Endpoint para cargar usuarios desde archivo .csv (formato multipart).
+     * 
+     * @param file Archivo CSV que contiene los usuarios.
+     * @return 400 con errores por línea si hay fallos, o 200 con mensaje de éxito.
+     * @throws BadRequestException Excepción en caso de fallo en la solicitud.
+     */
+    @RequestMapping(value = "/cargar-usuarios",
+        method = RequestMethod.POST,
+        consumes = {"multipart/form-data"},
+        produces = {"application/json"})
+    ResponseEntity<?> cargarUsuariosDesdeCsv(@RequestParam("file") MultipartFile file)
+        throws BadRequestException;
 
 }
