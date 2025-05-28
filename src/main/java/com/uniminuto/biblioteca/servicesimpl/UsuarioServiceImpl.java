@@ -169,4 +169,18 @@ public class UsuarioServiceImpl implements UsuarioService {
         return false;
     }
 
+    @Override
+    public Usuario obtenerUsuarioPorId(Integer usuarioId) throws BadRequestException {
+        Optional<Usuario> optUser = this.usuarioRepository.findById(usuarioId);
+        if (!optUser.isPresent()) {
+            throw new BadRequestException("El usuario no existe.");
+        }
+        return optUser.get();
+    }
+
+    @Override
+    public Usuario obtenerUsuarioId(Integer usuarioId) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
 }

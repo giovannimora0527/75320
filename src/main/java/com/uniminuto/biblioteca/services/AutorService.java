@@ -8,7 +8,7 @@ import org.apache.coyote.BadRequestException;
 
 /**
  *
- * @author Sofía Pedraza
+ 
  */
 public interface AutorService {
  List<Autor> listarTodo() throws BadRequestException;

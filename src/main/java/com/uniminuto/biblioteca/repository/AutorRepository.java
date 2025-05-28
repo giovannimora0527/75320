@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 /**
  *
- * @author Sofía Pedraza
+ * @author 
  */
 @Repository
 public interface AutorRepository extends

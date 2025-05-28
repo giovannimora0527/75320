@@ -31,5 +31,9 @@ public interface UsuarioService {
     RespuestaGenerica guardarUsuario(UsuarioRq usuario) throws BadRequestException;
     
     RespuestaGenerica actualizarUsuario(Usuario usuario) throws BadRequestException;
+
+    public Usuario obtenerUsuarioPorId(Integer usuarioId) throws BadRequestException;
+
+    public Usuario obtenerUsuarioId(Integer usuarioId);
     
 }

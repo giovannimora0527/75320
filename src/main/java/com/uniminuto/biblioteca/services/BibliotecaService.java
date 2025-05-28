@@ -4,7 +4,7 @@ import com.uniminuto.biblioteca.model.TestRs;
 
 /**
  *
- * @author lmora
+ * @author 
  */
 public interface BibliotecaService {
     
