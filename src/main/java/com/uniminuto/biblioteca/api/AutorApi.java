@@ -1,16 +1,20 @@
 package com.uniminuto.biblioteca.api;
 
 import com.uniminuto.biblioteca.entity.Autor;
-import com.uniminuto.biblioteca.model.RespuestaGenerica;
 import com.uniminuto.biblioteca.model.AutorRq;
+import com.uniminuto.biblioteca.model.AutorRs;
+import com.uniminuto.biblioteca.model.RespuestaGenericaRs;
 import java.util.List;
 import org.apache.coyote.BadRequestException;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -60,32 +64,26 @@ public interface AutorApi {
     ResponseEntity<Autor> listarAutorPorId(@RequestParam Integer autorIds)
             throws BadRequestException;
     
-    /**
-     * 
-     * @param autor
-     * @return
-     * @throws BadRequestException 
-     */
     @RequestMapping(value = "/guardar-autor",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<RespuestaGenerica> guardarAutor(
-            @RequestBody AutorRq usuario)
+    ResponseEntity<RespuestaGenericaRs> crearAutor(@RequestBody AutorRq AutorRq)
             throws BadRequestException;
-    
-    /**
-     * 
-     * @param autor
-     * @return
-     * @throws BadRequestException 
-     */
+
     @RequestMapping(value = "/actualizar-autor",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<RespuestaGenerica> actualizarAutor(
-            @RequestBody Autor autor)
+    ResponseEntity<RespuestaGenericaRs> actualizarAutor(@RequestBody Autor autor)
             throws BadRequestException;
+    
+    @PostMapping(
+    value = "/cargar-autores",
+    consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+    produces = MediaType.APPLICATION_JSON_VALUE
+)
+ResponseEntity<AutorRs> cargarUsuariosDesdeCsv(@RequestParam("file") MultipartFile archivo) 
+    throws BadRequestException;
     
 }

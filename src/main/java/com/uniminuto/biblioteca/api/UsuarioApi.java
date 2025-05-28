@@ -1,16 +1,19 @@
 package com.uniminuto.biblioteca.api;
 
 import com.uniminuto.biblioteca.entity.Usuario;
-import com.uniminuto.biblioteca.model.RespuestaGenerica;
 import com.uniminuto.biblioteca.model.UsuarioRq;
+import com.uniminuto.biblioteca.model.UsuarioRs;
 import java.util.List;
 import org.apache.coyote.BadRequestException;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -49,31 +52,50 @@ public interface UsuarioApi {
             throws BadRequestException;
     
     /**
-     * 
-     * @param usuario
-     * @return
-     * @throws BadRequestException 
+     * Metodo para guardar un usuario nuevo.
+     *
+     * @return mensaje del servicio.
+     * @throws BadRequestException excepcion.
      */
     @RequestMapping(value = "/guardar-usuario",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<RespuestaGenerica> guardarUsuario(
-            @RequestBody UsuarioRq usuario)
+    ResponseEntity<UsuarioRs> guardarUsuario(
+            @RequestBody UsuarioRq usuarioNuevo)
             throws BadRequestException;
     
+    
     /**
-     * 
-     * @param usuario
-     * @return
-     * @throws BadRequestException 
+     * Metodo para actualizar un usuario.
+     *
+     * @return mensaje del servicio.
+     * @throws BadRequestException excepcion.
      */
     @RequestMapping(value = "/actualizar-usuario",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<RespuestaGenerica> actualizarUsuario(
-            @RequestBody Usuario usuario)
+    ResponseEntity<UsuarioRs> actualizarUsuario(
+            @RequestBody Usuario usuarioActualizar)
             throws BadRequestException;
+    
+    
+    /**
+     * Metodo para cargar masivamente usuarios.
+     *
+     * @return mensaje del servicio.
+     * @throws BadRequestException excepcion.
+     */
+    @PostMapping(
+    value = "/cargar-usuarios",
+    consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+    produces = MediaType.APPLICATION_JSON_VALUE
+)
+ResponseEntity<UsuarioRs> cargarUsuariosDesdeCsv(@RequestParam("file") MultipartFile archivo) 
+    throws BadRequestException;
+
+
+
 
 }

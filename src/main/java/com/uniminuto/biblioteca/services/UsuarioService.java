@@ -1,10 +1,11 @@
 package com.uniminuto.biblioteca.services;
 
 import com.uniminuto.biblioteca.entity.Usuario;
-import com.uniminuto.biblioteca.model.RespuestaGenerica;
 import com.uniminuto.biblioteca.model.UsuarioRq;
+import com.uniminuto.biblioteca.model.UsuarioRs;
 import java.util.List;
 import org.apache.coyote.BadRequestException;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -27,9 +28,25 @@ public interface UsuarioService {
      */
     Usuario buscarPorCorreo(String correo) throws BadRequestException;
     
+    /**
+     * Guarda un usuario nuevo.
+     * @return Respuesta del servicio.
+     * @throws BadRequestException excepcion del servicio.
+     */
+    UsuarioRs guardarUsuarioNuevo(UsuarioRq usuarioNuevo) throws BadRequestException;
     
-    RespuestaGenerica guardarUsuario(UsuarioRq usuario) throws BadRequestException;
     
-    RespuestaGenerica actualizarUsuario(Usuario usuario) throws BadRequestException;
+    /**
+     * Actualiza un usuario.
+     * @return Respuesta del servicio.
+     * @throws BadRequestException excepcion del servicio.
+     */
+    UsuarioRs actualizarUsuario(Usuario usuario) throws BadRequestException;
+    
+    /**
+     * Carga masivamente usuarios.
+     */
+    UsuarioRs cargarUsuariosDesdeCsv(MultipartFile archivo) throws BadRequestException;
+
     
 }

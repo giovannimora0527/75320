@@ -3,16 +3,30 @@ package com.uniminuto.biblioteca.model;
 import lombok.Data;
 
 /**
- * DTO para la creación y actualización de un libro.
+ *
+ * @author lmora
  */
 @Data
 public class LibroRq {
-
+    /**
+     * titulo.
+     */
     private String titulo;
-    private Integer autorId;  
+    /**
+     * categoriaId.
+     */
+    private Integer categoriaId;
+    /**
+     * anioPublicacion.
+     */
     private Integer anioPublicacion;
-    private String categoria;
+    /**
+     * existencias.
+     */
     private Integer existencias;
-
-    
+    /**
+     * autorId.
+     */
+    private Integer autorId;
+   
 }

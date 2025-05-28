@@ -1,17 +1,21 @@
 package com.uniminuto.biblioteca.api;
 
 import com.uniminuto.biblioteca.entity.Libro;
-import com.uniminuto.biblioteca.model.RespuestaGenerica;
 import com.uniminuto.biblioteca.model.LibroRq;
+import com.uniminuto.biblioteca.model.LibroRs;
+import com.uniminuto.biblioteca.model.RespuestaGenericaRs;
 import java.util.List;
 import org.apache.coyote.BadRequestException;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import com.uniminuto.biblioteca.entity.LibroDisponibleProjection;
+import org.springframework.web.multipart.MultipartFile;
+
 /**
  *
  * @author lmora
@@ -21,7 +25,7 @@ import com.uniminuto.biblioteca.entity.LibroDisponibleProjection;
 public interface LibroApi {
 
     /**
-     * Metodo para listar los autores registrados en bd.
+     * Metodo para listar los libros registrados en bd.
      *
      * @return Lista de libros registrados.
      * @throws BadRequestException excepcion.
@@ -92,38 +96,55 @@ public interface LibroApi {
             @RequestParam Integer anioFin)
             throws BadRequestException;
     
-     /**
-     * 
-     * @param libro
-     * @return
-     * @throws BadRequestException 
+    /**
+     * Metodo para guardar un libro nuevo.
+     *
+     * @param LibroRq entrada.
+     * @return Respuesta del servicio.
+     * @throws BadRequestException excepcion.
      */
-    @RequestMapping(value = "/guardar-libro",
+    @RequestMapping(value = "/crear-libro",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<RespuestaGenerica> guardarLibro(
-            @RequestBody LibroRq libro)
+    ResponseEntity<RespuestaGenericaRs> crearLibro(@RequestBody LibroRq LibroRq)
             throws BadRequestException;
     
+    
     /**
-     * 
-     * @param libro
-     * @return
-     * @throws BadRequestException 
+     * Metodo para listar los libros disponibles para prestamo.
+     *
+     * @return Lista de libros disponibles.
+     * @throws BadRequestException excepcion.
+     */
+    @RequestMapping(value = "/listar-for-prestamo",
+            produces = {"application/json"},
+            consumes = {"application/json"},
+            method = RequestMethod.GET)
+    ResponseEntity<List<Libro>> listarLibrosParaPrestamo()
+            throws BadRequestException;
+    
+    
+    /**
+     * Metodo para actualizar un libro nuevo.
+     *
+     * @param Libro entrada.
+     * @return Respuesta del servicio.
+     * @throws BadRequestException excepcion.
      */
     @RequestMapping(value = "/actualizar-libro",
             produces = {"application/json"},
             consumes = {"application/json"},
-            method = RequestMethod.PUT)
-    ResponseEntity<RespuestaGenerica> actualizarLibro(
-            @RequestBody Libro libro)
+            method = RequestMethod.POST)
+    ResponseEntity<RespuestaGenericaRs> actualizarLibro(@RequestBody Libro Libro)
             throws BadRequestException;
     
-    @RequestMapping(value = "/listar-disponibles",
-            produces = {"application/json"},
-            method = RequestMethod.GET)
-    ResponseEntity<List<LibroDisponibleProjection>> listarLibrosDisponibles()
-            throws BadRequestException;
+    @PostMapping(
+    value = "/cargar-libros",
+    consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+    produces = MediaType.APPLICATION_JSON_VALUE
+)
+ResponseEntity<LibroRs> cargarLibrosDesdeCsv(@RequestParam("file") MultipartFile archivo) 
+    throws BadRequestException;
     
 }

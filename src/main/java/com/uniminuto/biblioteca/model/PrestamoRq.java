@@ -1,25 +1,33 @@
 package com.uniminuto.biblioteca.model;
 
 import lombok.Data;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
+/**
+ *
+ * @author lmora
+ */
 @Data
 public class PrestamoRq {
-    private LocalDateTime fechaPrestamo;
-    private LocalDateTime fechaDevolucion;
-    private LocalDateTime fechaEntrega;
-    private String estado;
-    
-     /**
-     * Identificador del usuario que realiza el préstamo.
-     */
-    private Integer idUsuario;
 
     /**
-     * Identificador del libro a prestar.
+     * Identificador único del usuario asociado a la operación. Debe ser un ID
+     * válido existente en la tabla de usuarios. No puede ser nulo y debe ser un
+     * número positivo.
      */
-    private Integer idLibro;
+    private Integer usuarioId;
 
+    /**
+     * Identificador único del libro involucrado en la operación. Debe
+     * corresponder a un ID válido existente en la tabla de libros. No puede ser
+     * nulo y debe ser un número positivo.
+     */
+    private Integer libroId;
 
+    /**
+     * Fecha programada o realizada de devolución del libro. Formato esperado:
+     * ISO-8601 (yyyy-MM-dd). Para préstamos activos, representa la fecha límite
+     * de devolución. Para préstamos finalizados, representa la fecha real de
+     * devolución. No puede ser una fecha anterior a la fecha de préstamo.
+     */
+    private String fechaDevolucion;
 }
