@@ -16,4 +16,8 @@ public class AutorRq {
     private String nombre;
     private String nacionalidad;
     private LocalDate fechaNacimiento;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 5c56f8d446d5a59b870431403c8c05c636d466fd

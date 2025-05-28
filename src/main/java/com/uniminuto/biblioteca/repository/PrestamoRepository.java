@@ -1,13 +1,23 @@
+<<<<<<< HEAD
 package com.uniminuto.biblioteca.repository;
 
 import com.uniminuto.biblioteca.entity.Prestamo;
 import com.uniminuto.biblioteca.entity.Libro;
 import java.time.LocalDate;
 import java.util.List;
+=======
+/**
+ * @author Sofía Pedraza
+ */
+package com.uniminuto.biblioteca.repository;
+
+import com.uniminuto.biblioteca.entity.Prestamo;
+>>>>>>> 5c56f8d446d5a59b870431403c8c05c636d466fd
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 /**
+<<<<<<< HEAD
  * Repositorio para gestionar los préstamos de libros.
  */
 @Repository
@@ -44,3 +54,10 @@ public interface PrestamoRepository extends
     List<Prestamo> findByFechaDevolucionBetween(LocalDate inicio, LocalDate fin);
 }
 
+=======
+ * Repositorio que permite realizar operaciones CRUD sobre la entidad {@link Prestamo}.
+ */
+@Repository
+public interface PrestamoRepository extends JpaRepository<Prestamo, Integer> {
+}
+>>>>>>> 5c56f8d446d5a59b870431403c8c05c636d466fd

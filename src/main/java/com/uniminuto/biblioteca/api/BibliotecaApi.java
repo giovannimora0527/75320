@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  *
- * @author lmora
+ * @author Sofía Pedraza
  */
 @CrossOrigin(origins = "*")
 @RequestMapping("/app")
@@ -22,7 +22,6 @@ public interface BibliotecaApi {
      */
     @RequestMapping(value = "/test",
             produces = {"application/json"},
-            consumes = {"application/json"},
             method = RequestMethod.GET)
     ResponseEntity<TestRs> testService()
             throws BadRequestException;

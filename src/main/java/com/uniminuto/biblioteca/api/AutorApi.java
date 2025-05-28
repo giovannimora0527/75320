@@ -14,7 +14,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
+<<<<<<< HEAD
 
+=======
+ * @author Sofía Pedraza
+>>>>>>> 5c56f8d446d5a59b870431403c8c05c636d466fd
  */
 @CrossOrigin(origins = "*")
 @RequestMapping("/autor")
@@ -101,4 +105,8 @@ public interface AutorApi {
     ResponseEntity<Autor> listarAutorPorId(@RequestParam Integer autorId)
             throws BadRequestException;
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 5c56f8d446d5a59b870431403c8c05c636d466fd

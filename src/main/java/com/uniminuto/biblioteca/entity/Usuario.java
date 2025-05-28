@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package com.uniminuto.biblioteca.entity;
 
 import java.io.Serializable;
@@ -11,11 +15,12 @@ import javax.persistence.Table;
 import lombok.Data;
 
 /**
- *
- * @author lmora
- */
-/**
- * Entidad que representa la tabla "usuarios" en la base de datos.
+ * Clase que representa un Usuario en el sistema.
+ * Esta clase mapea los datos de la tabla "usuarios" en la base de datos
+ * y contiene información relevante sobre el usuario, como su identificador, nombre, correo,
+ * teléfono y fecha de registro.
+ * 
+ * @author Sofía Pedraza
  */
 @Data
 @Entity

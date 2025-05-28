@@ -11,6 +11,7 @@
     import javax.persistence.Table;
     import lombok.Data;
 
+<<<<<<< HEAD
     /**
      *
      * @author lmora
@@ -19,6 +20,19 @@
     @Entity
     @Table(name = "libros")
     public class Libro implements Serializable {
+=======
+/**
+ * Clase que representa un Libro en el sistema.
+ * Esta clase mapea los datos de la tabla "libros" en la base de datos
+ * y contiene información relevante sobre el libro, como su título, autor, año de publicación, categoría y existencias.
+ * 
+ * @author Sofía Pedraza
+ */
+@Data
+@Entity
+@Table(name = "libros")
+public class Libro implements Serializable {
+>>>>>>> 5c56f8d446d5a59b870431403c8c05c636d466fd
 
         private static final long serialVersionUID = 1L;
 
@@ -41,9 +55,16 @@
         @Column(name = "anio_publicacion")
         private Integer anioPublicacion;
 
+<<<<<<< HEAD
         /** Categoría a la que pertenece el libro. */
         @Column(name = "categoria", length = 100)
         private String categoria;
+=======
+    /** Categoría a la que pertenece el libro. */   
+    @ManyToOne
+    @JoinColumn(name = "categoria_id", nullable = false)
+    private Categoria categoria;
+>>>>>>> 5c56f8d446d5a59b870431403c8c05c636d466fd
 
         /** Cantidad de ejemplares disponibles del libro. */
         @Column(name = "existencias", nullable = false)
